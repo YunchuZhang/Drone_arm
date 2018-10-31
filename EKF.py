@@ -65,7 +65,9 @@ class EKF:
 		self.x += self.xdot*dt
 		self.F=np.eye(16)+self.F*dt
 		self.G=self.G*dt
-
+		print "++++++++++++++++++++++++++++++++++"
+		print "G matrix: ", self.G
+		print "++++++++++++++++++++++++++++++++++"
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
 		np.dot(np.dot(self.G,self.Q),self.G.transpose())
 		#!!!!normalize x first 4 terms,i.e. quaternions
