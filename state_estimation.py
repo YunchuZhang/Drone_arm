@@ -18,7 +18,7 @@ else:
 	
 imu.initialize()
 ekf = EKF()
-mpl = mpl()
+
 while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
