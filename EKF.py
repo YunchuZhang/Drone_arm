@@ -35,7 +35,7 @@ class EKF:
 		magnetic_initialized = False
 
 	def predict(self, gyro, acc, t):#t is the time we read data from sensor
-		if !imu_initialized:
+		if imu_initialized ==False:
 			imu_initialized=True
 			initialized = True
 			self.current_t=t
@@ -100,7 +100,7 @@ class EKF:
 		self.G[7:10,3:6]=diff_qvqstar_v(q)
 
 	def update(self, acc, t):#acc is the raw data from IMU
-		if !initialized:
+		if initialized==False:
 			initialized = True
 			self.current_t = t
 		if t < self.current_t: return
