@@ -15,8 +15,8 @@ class EKF:
 	G=np.zeros((16,6))
 	H=np.zeros((3,16))#observation Matrix
 	R=np.eye(3)#observation noise Matrix
-	gyro_cov=0.01
-	acc_cov = 0.1
+	gyro_cov=0.001
+	acc_cov = 0.001
 	gravity_cov=5
 	current_t=0
 	gravity=np.array([0,0,9.8])
@@ -100,7 +100,7 @@ class EKF:
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
-		acc_b_q[1:4]=acc-ba-bA
+		acc_b_q[1:4]=acc-bA#ba-bA
 		print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		print "acc_b_q quat: ", acc_b_q
