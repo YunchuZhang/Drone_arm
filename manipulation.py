@@ -1,7 +1,7 @@
 import numpy as np
 import math
-from numpy import quaternion
-
+#from numpy import quaternion
+import quaternion
 class mpl:
 
 	def skew_symmetric(self, v):
