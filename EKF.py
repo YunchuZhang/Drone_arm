@@ -50,9 +50,9 @@ class EKF:
 			q_init=mpl.euler2quaternion(rpy)# returns quaternion
 			self.x[0] = q_init.w
 			self.x[1:4] = q_init.x,q_init.y,q_init.z
-		if t <= current_t: return
+		if t <= self.current_t: return
 
-		dt = t - current_t #the time difference between reading time 
+		dt = t - self.current_t #the time difference between reading time 
 
 		self.process(gyro, acc) # get state transition matrix. The input parameters are raw data from sensor
 
