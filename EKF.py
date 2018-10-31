@@ -80,6 +80,7 @@ class EKF:
 		ba=self.x[13:16]# when the drone is static as init bias
 		q.w=self.x[0]
 		q.x,q.y,q.z=self.x[1:4]
+		print "quaternion: ", self.x[0:4]
 
 		gyro_q=np.quaternion(0,0,0,0)
 		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw#
