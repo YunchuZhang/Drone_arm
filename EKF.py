@@ -73,8 +73,8 @@ class EKF:
 		q=np.quaternion(0,0,0,0)#share addtress just make another name
 		p=self.x[4:7]
 		v=self.x[7:10]
-		ba=self.x[10:13]#what is the initail value of bias?! maybe we could use the first 3 seconds average value
-		bw=self.x[13:16]# when the drone is static as init bias
+		bw=self.x[10:13]#what is the initail value of bias?! maybe we could use the first 3 seconds average value
+		ba=self.x[13:16]# when the drone is static as init bias
 		q.w=self.x[0]
 		q.x,q.y,q.z=self.x[1:4]
 
@@ -140,7 +140,7 @@ class EKF:
 	def q_inverse(self,q):
 		q.x, q.y, q.z=-q.x, -q.y, -q.z
 		 
-		q=q/math.sqrt(q.w**2+q.x**2+q.y**2+q.z**2)
+		q=q/(q.w**2+q.x**2+q.y**2+q.z**2)
 		return q
 
 	def q2array(self, q):
