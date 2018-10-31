@@ -1,6 +1,7 @@
 import numpy as np
 import math
-from numpy import quaternion
+#from numpy import quaternion
+from manipulation import *
 GRAVITY=np.array([0,0,9.8])
 
 class EKF:
@@ -145,6 +146,6 @@ class EKF:
 	def array2q(self, a):
 		q=np.quaternion(a[0],a[1],a[2],a[3])
 		return q
-		
+
 	def q_vec(self, q):
 		return q_vec
