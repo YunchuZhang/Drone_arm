@@ -62,8 +62,9 @@ class EKF:
 		dt=0.0001
 
 		self.process(gyro, acc,bA,bb) # get state transition matrix. The input parameters are raw data from sensor
-
+		print "x_qian: ", self.x[10:16]
 		self.x += self.xdot*dt
+		print "x_hou: ", self.x[10:16]
 		self.F=np.eye(16)+self.F*dt
 		self.G=self.G*dt
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
