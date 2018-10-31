@@ -49,6 +49,7 @@ class EKF:
 			phy = math.atan2(acc[1],acc[2])#initial eular angles by using first data from IMU 
 			theta = math.atan2(-acc[0],acc[2])
 			rpy=np.array([phy, theta, 0])
+			print "rpy ", rpy
 			q_init=mpl.euler2quaternion(rpy)# returns quaternion
 			self.x[0] = q_init.w
 			self.x[1:4] = q_init.x,q_init.y,q_init.z
@@ -66,6 +67,9 @@ class EKF:
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
 		np.dot(np.dot(self.G,self.Q),self.G.transpose())
 		#!!!!normalize x first 4 terms,i.e. quaternions
+		print "+++++++++++++++++++++++++++"
+		print "prior Covariance: ", self.P
+		print "+++++++++++++++++++++++++++"
 		self.x /= np.linalg.norm(self.x[0:4],ord = 2)
 		self.current_t=t
 		self.acc=acc
@@ -81,6 +85,8 @@ class EKF:
 		q.w=self.x[0]
 		q.x,q.y,q.z=self.x[1:4]
 		print "quaternion: ", self.x[0:4]
+		print "position: ", self.x[4:7]
+		print "velocity: ", self.x[7:10]
 
 		gyro_q=np.quaternion(0,0,0,0)
 		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw#
@@ -109,9 +115,15 @@ class EKF:
 		self.F[4:7,7:10]=np.eye(3)
 		self.F[7:10,0:4]=mpl.diff_qvqstar_q(q,self.q2array(acc_b_q)[1:4])
 		self.F[7:10,13:16]=-mpl.diff_qvqstar_v(q)
+		print "*******************************************"
+		print "F Matrix: ", self.F
+		print "********************************************"
 
 		self.G[0:4,0:3]=0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.G[7:10,3:6]=mpl.diff_qvqstar_v(q)
+		print "*******************************************"
+		print "G Matrix: ", self.G
+		print "********************************************"
 
 	def update(self, acc, t):#acc is the raw data from IMU
 		if self.initialized==False:
@@ -126,6 +138,9 @@ class EKF:
 		self.x += np.dot(self.K,(z-self.zhat))
 		I=np.eye(16)
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
+		print "+++++++++++++++++++++++++++"
+		print "postrior Covariance: ", self.P
+		print "+++++++++++++++++++++++++++"
 		self.x[0:4] = self.q2array(self.q_normalize(self.array2q(self.x[0:4])))
 
 	def measurement(self): #acc is model result
