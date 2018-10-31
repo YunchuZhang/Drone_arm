@@ -114,7 +114,7 @@ class EKF:
 		self.measurement()
 		temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
 		print("temp_K",temp_K)
-		self.K = np.dot(np.dot(self.P*self.H.transpose()),temp_K)
+		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
 		self.x += K*(z-self.zhat)
 		I=np.eye(16)
 		self.P = ((I - np.dot(self.K, self.H)), self.P)
