@@ -48,6 +48,8 @@ class EKF:
 			self.current_t=t
 			phy = math.atan2(acc[1],acc[2])#initial eular angles by using first data from IMU 
 			theta = math.atan2(-acc[0],acc[2])
+			phy=phy*180/math.pi
+			theta=theta*180/math.pi	
 			rpy=np.array([phy, theta, 0])
 			print "rpy ", rpy
 			q_init=mpl.euler2quaternion(rpy)# returns quaternion
