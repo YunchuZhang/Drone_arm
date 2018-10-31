@@ -94,11 +94,14 @@ class EKF:
 
 		acc_b_q=np.zeros(4)
 		acc_b_q[1:4]=acc-ba
+		print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
+		print "acc_b_q array: ", acc_b_q
 		acc_n_q=self.q2array(q*acc_b_q*self.q_inverse(q))
+		print "acc_n_q quat: ", acc_n_q
 		self.xdot[7:10]=acc_n_q[1:4]-self.gravity
-		print "acc_before gravity minus: ", acc_n_q
-		print "acc_from_model: ", self.xdot[7:10]
+		#print "acc_before gravity minus: ", acc_n_q
+		print "final acc_from_model: ", self.xdot[7:10]
 
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
