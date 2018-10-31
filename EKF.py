@@ -92,13 +92,13 @@ class EKF:
 		acc_b_q=np.zeros(4)
 		acc_b_q[1:4]=acc-ba
 		acc_b_q=self.array2q(acc_b_q)
-		acc_n_q=self.q2array(q*acc_b_q*q_inverse(q))
+		acc_n_q=self.q2array(q*acc_b_q*self.q_inverse(q))
 		self.xdot[7:10]=acc_n_q[1:4]-self.gravity
 
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_q(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.F[4:7,7:10]=np.eye(3)
-		self.F[7:10,0:4]=mpl.diff_qvqstar_q(q,q2array(acc_b_q)[1:4])
+		self.F[7:10,0:4]=mpl.diff_qvqstar_q(q,self.q2array(acc_b_q)[1:4])
 		self.F[7:10,13:16]=-mpl.diff_qvqstar_v(q)
 
 		self.G[0:4,0:3]=0.5*mpl.diff_pq_q(q)[0:4,1:4]
