@@ -116,7 +116,7 @@ class EKF:
 		self.F[7:10,0:4]=mpl.diff_qvqstar_q(q,self.q2array(acc_b_q)[1:4])
 		self.F[7:10,13:16]=-mpl.diff_qvqstar_v(q)
 		print "+++++++++++++++++++++++++"
-		print "F[7:10,:]: ", self.F[7:10,:]
+		print "F[7:10,13:16]: ", self.F[7:10,13:16]
 		print "+++++++++++++++++++++++++"
 		self.G[0:4,0:3]=0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.G[7:10,3:6]=mpl.diff_qvqstar_v(q)
