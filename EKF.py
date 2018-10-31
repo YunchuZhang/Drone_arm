@@ -139,7 +139,7 @@ class EKF:
 		q.w=self.x[0]
 		q.x,q.y,q.z=self.x[1:4]
 		#???ba
-		g_n_q=np.quaternion(0,0,0,9.8)
+		g_n_q=np.quaternion(0,0,0,1)
 		acc_q=self.q_inverse(q)*g_n_q*q #????????normalize
 		print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q.x, acc_q.y, acc_q.z
