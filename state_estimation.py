@@ -4,7 +4,7 @@ import argparse
 import sys
 import navio.mpu9250
 import navio.util
-import EKF
+from  EKF import *
 
 navio.util.check_apm()
 
