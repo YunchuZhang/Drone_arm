@@ -102,11 +102,11 @@ class EKF:
 
 		acc_b_q=np.zeros(4)
 		acc_b_q[1:4]=acc-ba-random.gauss(0,0.01)#ba-bA
-		print "acc_b_q: ", acc_b_q
+		#print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
-		print "acc_b_q quat: ", acc_b_q
+		#print "acc_b_q quat: ", acc_b_q
 		acc_n_q=self.q2array(q*acc_b_q*self.q_inverse(q))
-		print "acc_n_q array: ", acc_n_q
+		#print "acc_n_q array: ", acc_n_q
 		self.xdot[7:10]=acc_n_q[1:4]-self.gravity
 		#print "acc_before gravity minus: ", acc_n_q
 		print "final acc_from_model: ", self.xdot[7:10]
@@ -132,6 +132,7 @@ class EKF:
 		temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
 		self.x += np.dot(self.K,(z-self.zhat))
+		print "z-zhat: ", z-self.zhat
 		I=np.eye(16)
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
 		self.x[0:4] = self.q2array(self.q_normalize(self.array2q(self.x[0:4])))
@@ -143,7 +144,7 @@ class EKF:
 		#???ba
 		g_n_q=np.quaternion(0,0,0,1)
 		acc_q=self.q_inverse(q)*g_n_q*q #????????normalize
-		print "acc_q: ", acc_q
+		#print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q.x, acc_q.y, acc_q.z
 		self.H[0:3,0:4] = mpl.diff_qstarvq_q(q, GRAVITY)
 
