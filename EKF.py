@@ -16,6 +16,7 @@ class EKF:
 	H=np.zeros((6,16))#observation Matrix
 	R=np.eye(3)#observation noise Matrix
 	gyro_cov=0.01
+	acc_cov = 0.1
 	gravity_cov=5.0
 	current_t=0
 	gravity=np.array([0,0,9.8])
@@ -27,9 +28,9 @@ class EKF:
 	def __init__(self):
 		initialized = False
 		self.x[0]=1
-		self.Q[0:3,0:3]*=gyro_cov
-		self.Q[3:6,3:6]*=acc_cov
-		self.R*=gravity_cov
+		self.Q[0:3,0:3]*=self.gyro_cov
+		self.Q[3:6,3:6]*=self.acc_cov
+		self.R*=self.gravity_cov
 
 		initialized = False
 		imu_initialized = False
