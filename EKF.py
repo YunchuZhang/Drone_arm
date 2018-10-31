@@ -12,8 +12,8 @@ class EKF:
 	P=np.eye(16)#covariance matrix
 	Q=np.zeros((6,6))#process noise covariance
 	F=np.zeros((16,16))#state transition
-	G=np.zeros(16,6)
-	H=np.zeros(6,16)#observation Matrix
+	G=np.zeros((16,6))
+	H=np.zeros((6,16))#observation Matrix
 	R=np.eye(3)#observation noise Matrix
 	gyro_cov=0.01
 	gravity_cov=5.0
