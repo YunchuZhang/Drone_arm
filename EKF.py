@@ -44,8 +44,8 @@ class EKF:
 			self.imu_initialized=True
 			self.initialized = True
 			self.current_t=t
-			phy = atan2(acc[1],acc[2])#initial eular angles by using first data from IMU 
-			theta = atan2(-acc[0],acc[2])
+			phy = math.atan2(acc[1],acc[2])#initial eular angles by using first data from IMU 
+			theta = math.atan2(-acc[0],acc[2])
 			rpy=np.array([phy, theta, 0])
 			q_init=mpl.euler2quaternion(rpy)# returns quaternion
 			self.x[0] = q_init.w
