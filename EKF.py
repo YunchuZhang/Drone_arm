@@ -7,8 +7,8 @@ mpl = mpl()
 class EKF:
 	x=np.zeros(16)#16 states q p v bw ba
 	xdot=np.zeros(16)#16 states derivatives
-	z=np.zeros(6)#real raw data from sensor
-	zhat=np.zeros(6)#H*x_bar
+	z=np.zeros(3)#real raw data from sensor
+	zhat=np.zeros(3)#H*x_bar
 	P=np.eye(16)#covariance matrix
 	Q=np.zeros((6,6))#process noise covariance
 	F=np.zeros((16,16))#state transition
