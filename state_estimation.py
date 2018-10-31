@@ -28,4 +28,4 @@ while True:
 	imu_count+=1
 	if imu_count%10==0:
 		ekf.update(acc,t)
-	print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10], "bias_acc", ekf.x[10:13], "bias_gyro", ekf.x[13:16])
+	print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
