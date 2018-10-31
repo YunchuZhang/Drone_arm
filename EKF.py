@@ -152,11 +152,9 @@ class EKF:
 		return q
 
 	def q_inverse(self,q):
-		print "q in the inverse func 1: ", q
 		q.x, q.y, q.z=-q.x, -q.y, -q.z
 		 
 		q=q/(q.w**2+q.x**2+q.y**2+q.z**2)
-		print "q in the inverse func 2: ", q
 		return q
 
 	def q2array(self, q):
