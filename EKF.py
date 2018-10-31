@@ -119,7 +119,7 @@ class EKF:
 		self.G[0:4,0:3]=0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.G[7:10,3:6]=mpl.diff_qvqstar_v(q)
 
-		print "x_dot[10:16]: ", self.x_dot[10:13],self.x_dot[13:16]
+		print "x_dot[10:16]: ", self.xdot[10:16],self.xdot[13:16]
 
 	def update(self, acc, t):#acc is the raw data from IMU
 		if self.initialized==False:
