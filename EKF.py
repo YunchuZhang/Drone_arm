@@ -69,6 +69,7 @@ class EKF:
 		self.G=self.G*dt
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
 		np.dot(np.dot(self.G,self.Q),self.G.transpose())
+
 		#!!!!normalize x first 4 terms,i.e. quaternions
 		self.x /= np.linalg.norm(self.x[0:4],ord = 2)
 		self.current_t=t
@@ -138,8 +139,9 @@ class EKF:
 		self.x += np.dot(self.K,(z-self.zhat))
 		print "z-zhat: ", z-self.zhat
 		I=np.eye(16)
-		print "P: ", np.diag(np.mat(self.P))
+		print "P qian: ", np.diag(np.mat(self.P))
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
+		print "P hou: ", np.diag(np.mat(self.P))
 		self.x[0:4] = self.q2array(self.q_normalize(self.array2q(self.x[0:4])))
 
 	def measurement(self): #acc is model result

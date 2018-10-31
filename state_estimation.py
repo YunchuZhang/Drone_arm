@@ -9,6 +9,7 @@ from  EKF import *
 navio.util.check_apm()
 
 imu = navio.mpu9250.MPU9250()
+imu2 = navio.lsm9ds1.LSM9DS1()
 imu_count=0
 
 if imu.testConnection():
@@ -26,7 +27,9 @@ bb = np.array([0.0,0.0,0.0])
 while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
+	m9a2,m9g2,m9m2 = imu2.getMotion9()
 	acc, gyro = m9a, m9g
+	acc2, gyro2 = m9a2, m9g2
 	print "acc raw data: ", acc, "|| gyro raw data:", gyro
 	
 	if i <= 20:
@@ -42,7 +45,7 @@ while True:
 		ekf.predict(gyro, acc, t,bA,bb)
 		imu_count+=1
 		#if imu_count%10==0:
-		ekf.update(acc,t)
+		ekf.update(acc2,t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print "---------------------------------------------------------------------------------"
 	i = i + 1
