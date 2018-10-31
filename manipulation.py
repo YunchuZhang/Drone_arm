@@ -3,7 +3,8 @@ import math
 #from numpy import quaternion
 import quaternion
 class mpl:
-
+	def __init__(self):
+		pass
 	def skew_symmetric(self, v):
 		m = np.array([[0,-v[2],v[1]],[v[2],0,-v[0]],[-v[1],v[0],0]])
 		return m
