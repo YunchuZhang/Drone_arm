@@ -115,15 +115,9 @@ class EKF:
 		self.F[4:7,7:10]=np.eye(3)
 		self.F[7:10,0:4]=mpl.diff_qvqstar_q(q,self.q2array(acc_b_q)[1:4])
 		self.F[7:10,13:16]=-mpl.diff_qvqstar_v(q)
-		print "*******************************************"
-		print "F Matrix: ", self.F
-		print "********************************************"
 
 		self.G[0:4,0:3]=0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.G[7:10,3:6]=mpl.diff_qvqstar_v(q)
-		print "*******************************************"
-		print "G Matrix: ", self.G
-		print "********************************************"
 
 	def update(self, acc, t):#acc is the raw data from IMU
 		if self.initialized==False:
@@ -138,9 +132,6 @@ class EKF:
 		self.x += np.dot(self.K,(z-self.zhat))
 		I=np.eye(16)
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
-		print "+++++++++++++++++++++++++++"
-		print "postrior Covariance: ", self.P
-		print "+++++++++++++++++++++++++++"
 		self.x[0:4] = self.q2array(self.q_normalize(self.array2q(self.x[0:4])))
 
 	def measurement(self): #acc is model result
