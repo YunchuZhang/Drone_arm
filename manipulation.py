@@ -5,7 +5,7 @@ import quaternion
 class mpl:
 	def __init__(self):
 		pass
-	def skew_symmetric(self, v):
+	def self.skew_symetric(self, v):
 		m = np.array([[0,-v[2],v[1]],[v[2],0,-v[0]],[-v[1],v[0],0]])
 		return m
 
@@ -16,7 +16,7 @@ class mpl:
 		D[0,0] = p0
 		D[0,1:4] = -1*pv
 		D[1:4,0] = pv.transpose()
-		D[1:4,1:4] = np.eye(3)*p0 + skew_symmetric(pv)
+		D[1:4,1:4] = np.eye(3)*p0 + self.skew_symetric(pv)
 		return D
 	def diff_pq_p(self, q):
 		q0 = q.w
@@ -25,27 +25,27 @@ class mpl:
 		D[0,0] = q0
 		D[0,1:4] = -1*qv
 		D[1:4,0] = qv.transpose()
-		D[1:4,1:4] = np.eye(3)*q0 - skew_symmetric(qv)
+		D[1:4,1:4] = np.eye(3)*q0 - self.skew_symetric(qv)
 		return D
 	def diff_qvqstar_q(self, q, v):
 		q0 = q.w
 		qv = np.array([q.x,q.y,q.z])
 		D = np.zeros((3,4))
-		D[:,0] = 2*(q0*v.transpose() + np.dot(skew_symmetric(qv),v.transpose()))
-		D[:,1:4] = 2*(np.dot(-1*v.transpose(),qv) + ((v*qv).sum())*np.eye(3) - q0*skew_symmetric(v))
+		D[:,0] = 2*(q0*v.transpose() + np.dot(self.skew_symetric(qv),v.transpose()))
+		D[:,1:4] = 2*(np.dot(-1*v.transpose(),qv) + ((v*qv).sum())*np.eye(3) - q0*self.skew_symetric(v))
 		return D
 	def diff_qstarvq_q(self, q, v):
 		q0 = q.w
 		qv = np.array([q.x,q.y,q.z])
 		D = np.zeros((3,4))
-		D[:,0] = 2*(q0*v.transpose() - np.dot(skew_symmetric(qv),v.transpose()))
-		D[:,1:4] = 2*(np.dot(-1*v.transpose(),qv) + ((v*qv).sum())*np.eye(3) + q0*skew_symmetric(v))
+		D[:,0] = 2*(q0*v.transpose() - np.dot(self.skew_symetric(qv),v.transpose()))
+		D[:,1:4] = 2*(np.dot(-1*v.transpose(),qv) + ((v*qv).sum())*np.eye(3) + q0*self.skew_symetric(v))
 		return D
 	def diff_qvqstar_v(self, q):
 		q0 = q.w
 		qv = np.array([q.x,q.y,q.z])
 		#D = np.zeros((3,3))
-		D = (q0*q0 - (qv*qv).sum())*np.eye(3) + 2*np.dot(qv.transpose(),qv) + 2*q0*skew_symmetric(qv)
+		D = (q0*q0 - (qv*qv).sum())*np.eye(3) + 2*np.dot(qv.transpose(),qv) + 2*q0*self.skew_symetric(qv)
 		return D
 	def euler2quaternion(self, euler):
 		cr = math.cos(euler[0]/2.0)
