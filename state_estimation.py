@@ -17,7 +17,7 @@ else:
 	print "Connection established: False"
 	
 imu.initialize()
-
+EKF = EKF()
 while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
