@@ -132,6 +132,7 @@ class EKF:
 		self.measurement()
 		temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
+		print "self.K: ",self.K
 		self.x += np.dot(self.K,(z-self.zhat))
 		print "z-zhat: ", z-self.zhat
 		I=np.eye(16)
@@ -142,7 +143,7 @@ class EKF:
 		q=np.quaternion(0,0,0,0)
 		q.w=self.x[0]
 		q.x,q.y,q.z=self.x[1:4]
-		#???ba
+		#ba=self.x[13:16]
 		g_n_q=np.quaternion(0,0,0,1)
 		acc_q=self.q_inverse(q)*g_n_q*q #????????normalize
 		#print "acc_q: ", acc_q
