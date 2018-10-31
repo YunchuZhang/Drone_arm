@@ -17,7 +17,7 @@ class EKF:
 	R=np.eye(3)#observation noise Matrix
 	gyro_cov=0.01
 	acc_cov = 0.1
-	gravity_cov=5.0
+	gravity_cov=0.01
 	current_t=0
 	gravity=np.array([0,0,9.8])
 
@@ -82,7 +82,7 @@ class EKF:
 
 		gyro_q=np.quaternion(0,0,0,0)
 		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw#
-		q_dot=q*gyro_q #matrix multiply
+		q_dot=q*gyro_q #matrix multiply this line is correct
 		q_dot.w/=2
 		q_dot.x/=2
 		q_dot.y/=2
