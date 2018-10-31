@@ -17,14 +17,14 @@ else:
 	print "Connection established: False"
 	
 imu.initialize()
-EKF = EKF()
+ekf = EKF()
 while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
 	acc, gyro = m9a, m9g
 
-	EKF.predict(gyro, acc, t)
+	ekf.predict(gyro, acc, t)
 	imu_count+=1
 	if imu_count%10==0:
-		EKF.update(acc,t)
+		ekf.update(acc,t)
 	print("position: ", x[4:7], "velocity", x[7:10], "bias_acc", x[10:13], "bias_gyro", x[13:16])
