@@ -15,8 +15,7 @@ if imu.testConnection():
     print "Connection established: True"
 else:
 	print "Connection established: False"
-	return 0
-
+	
 imu.initialize()
 
 while True:
