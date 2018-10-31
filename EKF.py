@@ -134,7 +134,7 @@ class EKF:
 
 	def q_inverse(self,q):
 		q.x, q.y, q.z=-q.x, -q.y, -q.z
-		return q/=math.sqrt(q.w**2+q.x**2+q.y**2+q.z**2)
+		return q=q/math.sqrt(q.w**2+q.x**2+q.y**2+q.z**2)
 
 	def q2array(self, q):
 		return a=np.array([q.w,q.x,q.y,q.z])
