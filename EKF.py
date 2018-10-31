@@ -85,6 +85,8 @@ class EKF:
 		print "quaternion: ", self.x[0:4]
 		print "position: ", self.x[4:7]
 		print "velocity: ", self.x[7:10]
+		print "biasw: ", self.x[10:13]
+		print "biasa: ", self.x[13:16]
 
 		gyro_q=np.quaternion(0,0,0,0)
 		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw#
