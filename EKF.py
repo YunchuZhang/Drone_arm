@@ -4,6 +4,9 @@ import math
 from manipulation import *
 GRAVITY=np.array([0,0,9.8])
 
+initialized = False
+imu_initialized = False
+magnetic_initialized = False
 class EKF:
 	x=np.zeros(16)#16 states q p v bw ba
 	xdot=np.zeros(16)#16 states derivatives
