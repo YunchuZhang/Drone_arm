@@ -139,10 +139,12 @@ class EKF:
 		return q
 
 	def q2array(self, q):
-		return a=np.array([q.w,q.x,q.y,q.z])
+		a=np.array([q.w,q.x,q.y,q.z])
+		return a
 
 	def array2q(self, a):
-		return q=np.quaternion(a[0],a[1],a[2],a[3])
-
+		q=np.quaternion(a[0],a[1],a[2],a[3])
+		return q
+		
 	def q_vec(self, q):
 		return q_vec
