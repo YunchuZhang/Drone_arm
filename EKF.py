@@ -115,7 +115,7 @@ class EKF:
 		temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
 		print("temp_K",temp_K)
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
-		self.x += self.K*(z-self.zhat)
+		self.x += np.dot(self.K,(z-self.zhat))
 		I=np.eye(16)
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
 		self.x[0:4] = self.q2array(self.q_normalize(self.array2q(self.x[0:4])))
