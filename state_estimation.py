@@ -30,4 +30,4 @@ while True:
 	ekf.update(acc,t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print "---------------------------------------------------------------------------------"
-	#time.sleep(1)
+	time.sleep(1)
