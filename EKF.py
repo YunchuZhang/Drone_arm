@@ -15,8 +15,8 @@ class EKF:
 	G=np.zeros((16,6))
 	H=np.zeros((3,16))#observation Matrix
 	R=np.eye(3)#observation noise Matrix
-	gyro_cov=0.001
-	acc_cov = 0.001
+	gyro_cov=0.0001
+	acc_cov = 0.0001
 	gravity_cov=5
 	current_t=0
 	gravity=np.array([0,0,9.8])
@@ -89,7 +89,7 @@ class EKF:
 		print "biasa: ", self.x[13:16]
 
 		gyro_q=np.quaternion(0,0,0,0)
-		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw #-bb#
+		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw-[0.01,0.01,0.01] #-bb#
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		q_dot.w/=2.0
 		q_dot.x/=2.0
@@ -100,7 +100,7 @@ class EKF:
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
-		acc_b_q[1:4]=acc-ba#ba-bA
+		acc_b_q[1:4]=acc-ba-[0.01,0.01,0.01]#ba-bA
 		print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		print "acc_b_q quat: ", acc_b_q
@@ -119,7 +119,6 @@ class EKF:
 		self.G[0:4,0:3]=0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.G[7:10,3:6]=mpl.diff_qvqstar_v(q)
 
-		print "x_dot[10:16]: ", self.xdot[10:16],self.xdot[13:16]
 
 	def update(self, acc, t):#acc is the raw data from IMU
 		if self.initialized==False:
