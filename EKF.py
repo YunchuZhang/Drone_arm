@@ -138,7 +138,7 @@ class EKF:
 		self.x += np.dot(self.K,(z-self.zhat))
 		print "z-zhat: ", z-self.zhat
 		I=np.eye(16)
-		print "P: ", np.mat(self.P)
+		print "P: ", np.diag(np.mat(self.P))
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
 		self.x[0:4] = self.q2array(self.q_normalize(self.array2q(self.x[0:4])))
 
