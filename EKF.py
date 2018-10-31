@@ -35,8 +35,8 @@ class EKF:
 		self.Q[0:3,0:3]*=self.gyro_cov
 		self.Q[3:6,3:6]*=self.acc_cov
 		self.R*=self.gravity_cov
-		self.x[10:13]=0,0,0
-		self.x[13:16]=0,0,0
+		self.x[10:13]=random.gauss(0,0.01)
+		self.x[13:16]=random.gauss(0,0.01)
 
 		self.initialized = False
 		self.imu_initialized = False
