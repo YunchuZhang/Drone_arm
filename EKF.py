@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import random as random
 #from numpy import quaternion
 from manipulation import *
 GRAVITY=np.array([0,0,9.8])
@@ -89,7 +90,7 @@ class EKF:
 		print "biasa: ", self.x[13:16]
 
 		gyro_q=np.quaternion(0,0,0,0)
-		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw-[0.01,0.01,0.01] #-bb#
+		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw-random.gauss(0,0.01) #-bb#
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		q_dot.w/=2.0
 		q_dot.x/=2.0
@@ -100,7 +101,7 @@ class EKF:
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
-		acc_b_q[1:4]=acc-ba-[0.01,0.01,0.01]#ba-bA
+		acc_b_q[1:4]=acc-ba-random.gauss(0,0.01)#ba-bA
 		print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		print "acc_b_q quat: ", acc_b_q
