@@ -4,9 +4,6 @@ import math
 from manipulation import *
 GRAVITY=np.array([0,0,9.8])
 
-initialized = False
-imu_initialized = False
-magnetic_initialized = False
 class EKF:
 	x=np.zeros(16)#16 states q p v bw ba
 	xdot=np.zeros(16)#16 states derivatives
@@ -24,6 +21,9 @@ class EKF:
 	current_t=0
 	gravity=np.array([0,0,9.8])
 
+	initialized = False
+	imu_initialized = False
+	magnetic_initialized = False
 	acc=np.zeros(3)
 	gyro=np.zeros(3)
 
@@ -35,14 +35,14 @@ class EKF:
 		self.Q[3:6,3:6]*=self.acc_cov
 		self.R*=self.gravity_cov
 
-		initialized = False
-		imu_initialized = False
-		magnetic_initialized = False
+		self.initialized = False
+		self.imu_initialized = False
+		self.magnetic_initialized = False
 
 	def predict(self, gyro, acc, t):#t is the time we read data from sensor
-		if imu_initialized ==False:
-			imu_initialized=True
-			initialized = True
+		if self.imu_initialized ==False:
+			self.imu_initialized=True
+			self.initialized = True
 			self.current_t=t
 			phy = atan2(acc[1],acc[2])#initial eular angles by using first data from IMU 
 			theta = atan2(-acc[0],acc[2])
@@ -105,8 +105,8 @@ class EKF:
 		self.G[7:10,3:6]=diff_qvqstar_v(q)
 
 	def update(self, acc, t):#acc is the raw data from IMU
-		if initialized==False:
-			initialized = True
+		if self.initialized==False:
+			self.initialized = True
 			self.current_t = t
 		if t < self.current_t: return
 
