@@ -67,9 +67,6 @@ class EKF:
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
 		np.dot(np.dot(self.G,self.Q),self.G.transpose())
 		#!!!!normalize x first 4 terms,i.e. quaternions
-		print "+++++++++++++++++++++++++++"
-		print "prior Covariance: ", self.P
-		print "+++++++++++++++++++++++++++"
 		self.x /= np.linalg.norm(self.x[0:4],ord = 2)
 		self.current_t=t
 		self.acc=acc
