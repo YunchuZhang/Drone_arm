@@ -41,7 +41,7 @@ class EKF:
 		self.imu_initialized = False
 		self.magnetic_initialized = False
 
-	def predict(self, gyro, acc, t):#t is the time we read data from sensor
+	def predict(self, gyro, acc, t,bA,bb):#t is the time we read data from sensor
 		if self.imu_initialized ==False:
 			self.imu_initialized=True
 			self.initialized = True
@@ -60,7 +60,7 @@ class EKF:
 		#dt = t - self.current_t #the time difference between reading time 
 		dt=0.0001
 
-		self.process(gyro, acc) # get state transition matrix. The input parameters are raw data from sensor
+		self.process(gyro, acc,bA,bb) # get state transition matrix. The input parameters are raw data from sensor
 
 		self.x += self.xdot*dt
 		self.F=np.eye(16)+self.F*dt
@@ -74,7 +74,7 @@ class EKF:
 		self.gyro=gyro
 
 
-	def process(self, gyro, acc):
+	def process(self, gyro, acc,bA,bb):
 		q=np.quaternion(0,0,0,0)#share addtress just make another name
 		p=self.x[4:7]
 		v=self.x[7:10]
@@ -89,7 +89,7 @@ class EKF:
 		print "biasa: ", self.x[13:16]
 
 		gyro_q=np.quaternion(0,0,0,0)
-		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw -B#
+		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw -bb#
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		q_dot.w/=2
 		q_dot.x/=2
@@ -100,7 +100,7 @@ class EKF:
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
-		acc_b_q[1:4]=acc-ba-A
+		acc_b_q[1:4]=acc-ba-bA+[0,0,9.8]
 		print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		print "acc_b_q quat: ", acc_b_q

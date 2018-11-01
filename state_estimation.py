@@ -21,6 +21,8 @@ ekf = EKF()
 i = 1
 A = np.array([0,0,0])
 B = np.array([0,0,0])
+bA = []
+bb = []
 while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
@@ -30,10 +32,10 @@ while True:
 	if i <= 20:
 		A = A + acc
 		B = B + gyro
+		bA + =  A/20.0
+		bb + =  B/20.0	
 	else : 
-		A = A/20.0
-		B = B/20.0
-		ekf.predict(gyro, acc, t)
+		ekf.predict(gyro, acc, t,bA,bb)
 		imu_count+=1
 		#if imu_count%10==0:
 		ekf.update(acc,t)
