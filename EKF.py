@@ -89,7 +89,7 @@ class EKF:
 		print "biasa: ", self.x[13:16]
 
 		gyro_q=np.quaternion(0,0,0,0)
-		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw#
+		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw -B#
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		q_dot.w/=2
 		q_dot.x/=2
@@ -100,7 +100,7 @@ class EKF:
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
-		acc_b_q[1:4]=acc-ba
+		acc_b_q[1:4]=acc-ba-A
 		print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		print "acc_b_q quat: ", acc_b_q

@@ -18,16 +18,26 @@ else:
 	
 imu.initialize()
 ekf = EKF()
-
+i = 1
+A = np.array([0,0,0])
+B = np.array([0,0,0])
 while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
 	acc, gyro = m9a, m9g
 	print "acc raw data: ", acc, "|| gyro raw data:", gyro
-	ekf.predict(gyro, acc, t)
-	imu_count+=1
-	#if imu_count%10==0:
-	ekf.update(acc,t)
+	
+	if i <= 20:
+		A = A + acc
+		B = B + gyro
+	else : 
+		A = A/20.0
+		B = B/20.0
+		ekf.predict(gyro, acc, t)
+		imu_count+=1
+		#if imu_count%10==0:
+		ekf.update(acc,t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print "---------------------------------------------------------------------------------"
+	i = i + 1
 	time.sleep(1)
