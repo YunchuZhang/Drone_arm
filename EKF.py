@@ -3,6 +3,7 @@ import math
 import random as random
 #from numpy import quaternion
 from manipulation import *
+from plot1 import *
 GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
 class EKF:
@@ -27,8 +28,14 @@ class EKF:
 	magnetic_initialized = False
 	acc=np.zeros(3)
 	gyro=np.zeros(3)
-
-
+	#******************#
+	x_vec = np.linspace(0,1,100+1)[0:-1]
+	y_vec = np.zeros(len(x_vec))
+	y_2vec = np.zeros(len(x_vec))
+	line1 = []
+	line2 = []
+	line1_1 = []
+	line2_1 = []
 	def __init__(self):
 		initialized = False
 		self.x[0]=1
@@ -102,6 +109,34 @@ class EKF:
 		self.xdot[0] = q_dot.w
 		self.xdot[1:4] = q_dot.x, q_dot.y, q_dot.z
 		print "xdot[0:4]: ", self.xdot[0:4]
+
+
+    	rand_val = self.xdot[0]
+    	rand_val2 = self.xdot[1]
+    	self.y_vec[-1] = rand_val
+    	self.y_2vec[-1] = rand_val2
+    	self.line1,self.line2 = live_plotter(self.x_vec,self.y_vec,self.line1,self.y_2vec,self.line2)
+    	self.y_vec = np.append(self.y_vec[1:],0.0)
+    	self.y_2vec = np.append(self.y_2vec[1:],0.0)
+    	
+
+    	rand_val3 = self.xdot[2]
+    	rand_val4 = self.xdot[3]
+    	self.y_vec1[-1] = rand_val3
+    	self.y_2vec1[-1] = rand_val4
+    	self.line1_1,self.line2_1 = live_plotter(self.x_vec,self.y_vec1,self.line1_1,self.y_2vec1,self.line2_1)
+    	self.y_vec1 = np.append(self.y_vec1[1:],0.0)
+    	self.y_2vec1 = np.append(self.y_2vec1[1:],0.0)
+
+
+
+
+
+
+
+
+
+
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
