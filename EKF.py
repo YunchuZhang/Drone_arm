@@ -181,7 +181,7 @@ class EKF:
 		q.x,q.y,q.z=self.x[1:4]
 		#ba=self.x[13:16]
 		g_n_q=np.quaternion(0,0,0,1)
-		acc_q=self.q*g_n_q*self.q_inverse #????????normalize
+		acc_q=q*g_n_q*self.q_inverse #????????normalize
 		#print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q.x, acc_q.y, acc_q.z
 		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
