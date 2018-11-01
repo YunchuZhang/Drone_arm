@@ -28,7 +28,7 @@ while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
-	acc, gyro = -1*m9a, m9g
+	acc, gyro = m9a, m9g
 	#acc2, gyro2 = m9a2, m9g2
 	print "acc raw data: ", acc, "|| gyro raw data:", gyro
 	
@@ -42,6 +42,7 @@ while True:
 			bb = B/20.0
 			bA = bA -[0,0,9.8]
 		print bA,bb
+		acc=acc*-1
 		ekf.predict(gyro, acc, t,bA,bb)
 		imu_count+=1
 		#if imu_count%10==0:
