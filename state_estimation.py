@@ -25,7 +25,7 @@ B = np.array([0,0,0])
 bA = np.array([0.0,0.0,0.0])
 bb = np.array([0.0,0.0,0.0])
 while True:
-	t=time.time()
+	
 	m9a, m9g, m9m = imu.getMotion9()
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
 	acc, gyro = m9a, m9g
@@ -44,7 +44,7 @@ while True:
 
 		acc_=np.array([-acc[0],-acc[1],-acc[2]])
 		#print "acc_: ", acc_
-
+		t=time.time()
 		ekf.predict(gyro, acc, t,bA,bb)
 		imu_count+=1
 		#if imu_count%10==0:
