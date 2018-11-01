@@ -4,8 +4,7 @@ import random as random
 #from numpy import quaternion
 from manipulation import *
 from plot1 import live_plotter
-import matplotlib as plt
-plt.use('Agg')
+import matplotlib.pyplot as plt
 
 GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
