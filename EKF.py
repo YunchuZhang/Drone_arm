@@ -31,7 +31,7 @@ class EKF:
 
 	def __init__(self):
 		initialized = False
-		self.x[0]=1
+		self.x[0,0]=1
 		self.Q[0:3,0:3]*=self.gyro_cov
 		self.Q[3:6,3:6]*=self.acc_cov
 		self.R*=self.gravity_cov
@@ -54,8 +54,8 @@ class EKF:
 			rpy=np.array([phy, theta, 0])
 			print "phy theta: ", phy1, theta1
 			q_init=mpl.euler2quaternion(rpy)# returns quaternion
-			self.x[0] = q_init.w
-			self.x[1:4] = q_init.x,q_init.y,q_init.z
+			self.x[:,0] = q_init.w
+			self.x[:,1:4] = q_init.x,q_init.y,q_init.z
 		if t <= self.current_t: return
 
 		#dt = t - self.current_t #the time difference between reading time 
