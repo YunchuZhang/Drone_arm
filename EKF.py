@@ -130,7 +130,7 @@ class EKF:
 			self.current_t = t
 		if t < self.current_t: return
 
-		z=acc/np.linalg.norm(acc,ord=2)
+		z=np.mat(acc/np.linalg.norm(acc,ord=2))
 		self.measurement()
 		#print "self.H: ", self.H
 		#temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
