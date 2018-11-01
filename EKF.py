@@ -101,7 +101,7 @@ class EKF:
 		q_dot.z/=2.0
 		self.xdot[0] = q_dot.w
 		self.xdot[1:4] = q_dot.x, q_dot.y, q_dot.z
-		print "xdot[0:4]: ", xdot[0:4]
+		print "xdot[0:4]: ", self.xdot[0:4]
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
