@@ -114,7 +114,7 @@ class EKF:
 		print "gyro_q: ",gyro_q
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		print "q_dot: ", q_dot
-		norm_q=q_normalize(q_dot)
+		norm_q=self.q_normalize(q_dot)
 		print "norm_q: ", norm_q
 		q_dot.w/=2.0
 		q_dot.x/=2.0
