@@ -31,7 +31,8 @@ while True:
 	acc, gyro = m9a, m9g
 	#acc2, gyro2 = m9a2, m9g2
 	print "acc raw data: ", acc, "|| gyro raw data:", gyro
-	
+	acc=acc*-1
+	print "acc raw data: ", acc, "|| gyro raw data:", gyro
 	if i <= 20:
 		A = A + acc
 		B = B + gyro
@@ -42,7 +43,7 @@ while True:
 			bb = B/20.0
 			bA = bA -[0,0,9.8]
 		print bA,bb
-		acc=acc*-1
+
 		ekf.predict(gyro, acc, t,bA,bb)
 		imu_count+=1
 		#if imu_count%10==0:
