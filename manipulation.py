@@ -101,7 +101,7 @@ class mpl:
 			[-sp,    sr*cp,             cr*cp]])
 		return m
 	def quaternion2euler(self, q):
-		return self.mat2euler(self.quaternion2mat(q))
+		return self.mat2eular(self.quaternion2mat(q))
 
 
 
