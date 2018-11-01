@@ -5,6 +5,8 @@ import random as random
 from manipulation import *
 from plot1 import live_plotter
 import matplotlib.pyplot as plt
+matplotlib.use('Agg')
+
 GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
 class EKF:
