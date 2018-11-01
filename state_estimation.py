@@ -31,8 +31,7 @@ while True:
 	acc, gyro = m9a, m9g
 	#acc2, gyro2 = m9a2, m9g2
 	print "acc raw data: ", acc, "|| gyro raw data:", gyro
-	acc=acc*-1
-	print "acc raw data: ", acc, "|| gyro raw data:", gyro
+	print "acc[1]: ", acc[1]
 	if i <= 20:
 		A = A + acc
 		B = B + gyro
