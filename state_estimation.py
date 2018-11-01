@@ -21,8 +21,8 @@ ekf = EKF()
 i = 1
 A = np.array([0,0,0])
 B = np.array([0,0,0])
-bA = []
-bb = []
+bA = np.array([0,0,0])
+bb = np.array([0,0,0])
 while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
