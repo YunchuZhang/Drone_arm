@@ -77,7 +77,7 @@ class EKF:
 		if t <= self.current_t: return
 
 		#dt = t - self.current_t #the time difference between reading time 
-		dt=0.0001
+		dt=0.5
 
 		self.process(gyro, acc,bA,bb) # get state transition matrix. The input parameters are raw data from sensor
 		print "x_qian: ", self.x[10:16]
