@@ -125,23 +125,14 @@ class EKF:
 		self.xdot[1:4] = q_dot.x, q_dot.y, q_dot.z
 		print "xdot[0:4]: ", self.xdot[0:4]
 		
-		'''
-		rand_val = self.xdot[0]
-		rand_val2 = self.xdot[1]
-		self.y_vec[-1] = rand_val
-		self.y_2vec[-1] = rand_val2
-		self.line1,self.line2 = live_plotter(self.x_vec,self.y_vec,self.line1,self.y_2vec,self.line2)
-		self.y_vec = np.append(self.y_vec[1:],0.0)
-		self.y_2vec = np.append(self.y_2vec[1:],0.0)'''
-
-		
+	
 		self.xdot[4:7] = v
 		acc_b_q=np.zeros(4)
 		acc_b_q[1:4]=acc-ba#-random.gauss(0,0.01)#ba-bA
 		#print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		#print "acc_b_q quat: ", acc_b_q
-		acc_n_q=self.q2array(q*acc_b_q*self.q_inverse(q))
+		acc_n_q=self.q2array(self.q_inverse*acc_b_q*q)
 		#print "acc_n_q array: ", acc_n_q
 		self.xdot[7:10]=acc_n_q[1:4]-self.gravity
 		#print "acc_before gravity minus: ", acc_n_q
@@ -157,10 +148,10 @@ class EKF:
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.F[4:7,7:10]=np.eye(3)
 		self.F[7:10,0:4]=mpl.diff_qvqstar_q(q,self.q2array(acc_b_q)[1:4])
-		self.F[7:10,13:16]=-mpl.diff_qvqstar_v(q)
+		self.F[7:10,13:16]=-mpl.diff_qstarvq_v(q)
 
 		self.G[0:4,0:3]=0.5*mpl.diff_pq_q(q)[0:4,1:4]
-		self.G[7:10,3:6]=mpl.diff_qvqstar_v(q)
+		self.G[7:10,3:6]=mpl.diff_qstarvq_v(q)
 
 
 	def update(self, acc, t):#acc is the raw data from IMU
@@ -190,10 +181,10 @@ class EKF:
 		q.x,q.y,q.z=self.x[1:4]
 		#ba=self.x[13:16]
 		g_n_q=np.quaternion(0,0,0,1)
-		acc_q=self.q_inverse(q)*g_n_q*q #????????normalize
+		acc_q=self.q*g_n_q*self.q_inverse #????????normalize
 		#print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q.x, acc_q.y, acc_q.z
-		self.H[0:3,0:4] = mpl.diff_qstarvq_q(q, GRAVITY)
+		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
 
 	def q_normalize(self, q):
 		sum=math.sqrt(q.w**2+q.x**2+q.y**2+q.z**2)

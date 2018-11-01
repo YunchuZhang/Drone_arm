@@ -47,6 +47,12 @@ class mpl:
 		#D = np.zeros((3,3))
 		D = (q0*q0 - (qv*qv).sum())*np.eye(3) + 2*np.dot(qv.transpose(),qv) + 2*q0*self.skew_symetric(qv)
 		return D
+	def diff_qstarvq_v(self,q):
+		q0 = q.w
+		qv = np.array([q.x,q.y,q.z])
+		#D = np.zeros((3,3))
+		D = (q0*q0 - (qv*qv).sum())*np.eye(3) + 2*np.dot(qv.transpose(),qv) - 2*q0*self.skew_symetric(qv)
+		return D		
 	def euler2quaternion(self, euler):
 		cr = math.cos(euler[0]/2.0)
 		sr = math.sin(euler[0]/2.0)
