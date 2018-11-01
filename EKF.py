@@ -3,24 +3,24 @@ import math
 import random as random
 #from numpy import quaternion
 from manipulation import *
-GRAVITY=np.array([0,0,9.8])
+GRAVITY=np.mat(np.array([0,0,9.8]))
 mpl = mpl()
 class EKF:
-	x=np.zeros(16)#16 states q p v bw ba
-	xdot=np.zeros(16)#16 states derivatives
-	z=np.zeros(3)#real raw data from sensor
-	zhat=np.zeros(3)#H*x_bar
-	P=np.eye(16)#covariance matrix
-	Q=np.zeros((6,6))#process noise covariance
-	F=np.zeros((16,16))#state transition
-	G=np.zeros((16,6))
-	H=np.zeros((3,16))#observation Matrix
-	R=np.eye(3)#observation noise Matrix
+	x=np.mat(np.zeros(16))#16 states q p v bw ba
+	xdot=np.mat(np.zeros(16))#16 states derivatives
+	z=np.mat(np.zeros(3))#real raw data from sensor
+	zhat=np.mat(np.zeros(3))#H*x_bar
+	P=np.mat(np.eye(16))#covariance matrix
+	Q=np.mat(np.zeros((6,6)))#process noise covariance
+	F=np.mat(np.zeros((16,16)))#state transition
+	G=np.mat(np.zeros((16,6)))
+	H=np.mat(np.zeros((3,16)))#observation Matrix
+	R=np.mat(np.eye(3))#observation noise Matrix
 	gyro_cov=0.0001
 	acc_cov = 0.0001
 	gravity_cov=5
 	current_t=0
-	gravity=np.array([0,0,9.8])
+	gravity=np.mat(np.array([0,0,9.8]))
 
 	initialized = False
 	imu_initialized = False
@@ -35,8 +35,8 @@ class EKF:
 		self.Q[0:3,0:3]*=self.gyro_cov
 		self.Q[3:6,3:6]*=self.acc_cov
 		self.R*=self.gravity_cov
-		self.x[10:13]=random.gauss(0,0.01)
-		self.x[13:16]=random.gauss(0,0.01)
+		self.x[10:13]=[0,0,0]
+		self.x[13:16]=[0,0,0]
 
 		self.initialized = False
 		self.imu_initialized = False
@@ -67,8 +67,9 @@ class EKF:
 		print "x_hou: ", self.x[10:16]
 		self.F=np.eye(16)+self.F*dt
 		self.G=self.G*dt
-		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
-		np.dot(np.dot(self.G,self.Q),self.G.transpose())
+		#self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
+		#np.dot(np.dot(self.G,self.Q),self.G.transpose())
+		self.P = self.F*self.P*self.F.T+self.G*self.Q*self.G.T
 
 		#!!!!normalize x first 4 terms,i.e. quaternions
 		self.x /= np.linalg.norm(self.x[0:4],ord = 2)
@@ -92,7 +93,7 @@ class EKF:
 		print "biasa: ", self.x[13:16]
 
 		gyro_q=np.quaternion(0,0,0,0)
-		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw-random.gauss(0,0.01) #-bb#
+		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw#-random.gauss(0,0.01) #-bb#
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		q_dot.w/=2.0
 		q_dot.x/=2.0
@@ -103,7 +104,7 @@ class EKF:
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
-		acc_b_q[1:4]=acc-ba-random.gauss(0,0.01)#ba-bA
+		acc_b_q[1:4]=acc-ba#-random.gauss(0,0.01)#ba-bA
 		#print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		#print "acc_b_q quat: ", acc_b_q
@@ -132,15 +133,18 @@ class EKF:
 		z=acc/np.linalg.norm(acc,ord=2)
 		self.measurement()
 		#print "self.H: ", self.H
-		temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
+		#temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
 		#print "temp_K: ", temp_K
-		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
+		#self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
 		#print "self.K: ",self.K
-		self.x += np.dot(self.K,(z-self.zhat))
+		#self.x += np.dot(self.K,(z-self.zhat))
+		self.K = self.P*self.H.T*(self.H*self.P*self.H.T+self.R).I
+		self.x += self.K*(z-self.zhat)
 		print "z-zhat: ", z-self.zhat
-		I=np.eye(16)
+		I=np.mat(np.eye(16))
 		print "P qian: ", np.diag(np.mat(self.P))
-		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
+		#self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
+		self.P = (I - self.K*self.H)*self.P
 		print "P hou: ", np.diag(np.mat(self.P))
 		self.x[0:4] = self.q2array(self.q_normalize(self.array2q(self.x[0:4])))
 
