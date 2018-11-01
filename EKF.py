@@ -85,7 +85,7 @@ class EKF:
 		self.x /= np.linalg.norm(self.x[0:4],ord = 2)
 		print "euler angle:  ", 180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4]))
 		self.save = np.append(self.save,180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4])))
-		np.save('a.npy',save)
+		np.save('a.npy',self.save)
 
 		self.current_t=t
 		self.acc=acc
