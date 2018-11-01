@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt'''
 GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
 class EKF:
-	save = np.array([0,0,0])
+	save = []
 	x=np.zeros(16)#16 states q p v bw ba
 	xdot=np.zeros(16)#16 states derivaties
 	z=np.zeros(3)#real raw data from sensor
