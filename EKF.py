@@ -151,7 +151,7 @@ class EKF:
 	def measurement(self): #acc is model result
 		q=np.quaternion(0,0,0,0)
 		q.w=self.x[0,0]
-		q.x,q.y,q.z=self.x[1:4]
+		q.x,q.y,q.z=self.x[0,1], self.x[0,2], self.x[0,3]
 		#ba=self.x[13:16]
 		g_n_q=np.quaternion(0,0,0,1)
 		acc_q=self.q_inverse(q)*g_n_q*q #????????normalize
