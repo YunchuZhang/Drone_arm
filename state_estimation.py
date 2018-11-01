@@ -43,6 +43,9 @@ while True:
 			bA = bA -[0,0,9.8]
 		print bA,bb
 
+		acc_=np.array([-acc[0],-acc[1],-acc[2]])
+		print "acc_: ", acc_
+
 		ekf.predict(gyro, acc, t,bA,bb)
 		imu_count+=1
 		#if imu_count%10==0:
