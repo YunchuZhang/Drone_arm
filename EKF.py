@@ -17,8 +17,9 @@ import matplotlib.pyplot as plt'''
 GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
 class EKF:
+	save = np.array([0,0,0])
 	x=np.zeros(16)#16 states q p v bw ba
-	xdot=np.zeros(16)#16 states derivatives
+	xdot=np.zeros(16)#16 states derivaties
 	z=np.zeros(3)#real raw data from sensor
 	zhat=np.zeros(3)#H*x_bar
 	P=np.eye(16)#covariance matrix
@@ -52,7 +53,6 @@ class EKF:
 		self.initialized = False
 		self.imu_initialized = False
 		self.magnetic_initialized = False
-
 	def predict(self, gyro, acc, t,bA,bb):#t is the time we read data from sensor
 		if self.imu_initialized ==False:
 			self.imu_initialized=True
@@ -84,6 +84,7 @@ class EKF:
 		#!!!!normalize x first 4 terms,i.e. quaternions
 		self.x /= np.linalg.norm(self.x[0:4],ord = 2)
 		print "euler angle:  ", 180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4]))
+		self.save = np.append(180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4])))
 		self.current_t=t
 		self.acc=acc
 		self.gyro=gyro
