@@ -151,7 +151,7 @@ class EKF:
 		#self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
 		self.P = (I - self.K*self.H)*self.P
 		print "P hou: ", np.diag(np.mat(self.P))
-		self.x[0:4] = self.q2array(self.q_normalize(self.array2q(self.x[0:4])))
+		self.x[:,0:4] = self.q2array(self.q_normalize(self.array2q(self.x[:,0:4])))
 
 	def measurement(self): #acc is model result
 		q=np.quaternion(0,0,0,0)
