@@ -132,7 +132,7 @@ class EKF:
 		#print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		#print "acc_b_q quat: ", acc_b_q
-		acc_n_q=self.q2array(self.q_inverse*acc_b_q*q)
+		acc_n_q=self.q2array(self.q_inverse(q)*acc_b_q*q)
 		#print "acc_n_q array: ", acc_n_q
 		self.xdot[7:10]=acc_n_q[1:4]-self.gravity
 		#print "acc_before gravity minus: ", acc_n_q
