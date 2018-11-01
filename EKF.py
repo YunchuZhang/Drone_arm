@@ -62,9 +62,9 @@ class EKF:
 		dt=0.0001
 
 		self.process(gyro, acc,bA,bb) # get state transition matrix. The input parameters are raw data from sensor
-		print "x_qian: ", self.x[10:16]
+		print "x_qian: ", self.x[0,10:16]
 		self.x += self.xdot*dt
-		print "x_hou: ", self.x[10:16]
+		print "x_hou: ", self.x[0,10:16]
 		self.F=np.eye(16)+self.F*dt
 		self.G=self.G*dt
 		#self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
@@ -80,17 +80,17 @@ class EKF:
 
 	def process(self, gyro, acc,bA,bb):
 		q=np.quaternion(0,0,0,0)#share addtress just make another name
-		p=self.x[4:7]
-		v=self.x[7:10]
-		bw=self.x[10:13]#what is the initail value of bias?! maybe we could use the first 3 seconds average value
-		ba=self.x[13:16]# when the drone is static as init bias
+		p=self.x[0,4:7]
+		v=self.x[0,7:10]
+		bw=self.x[0,10:13]#what is the initail value of bias?! maybe we could use the first 3 seconds average value
+		ba=self.x[0,13:16]# when the drone is static as init bias
 		q.w=self.x[0,0]
 		q.x,q.y,q.z=self.x[0,1], self.x[0,2], self.x[0,3]
-		print "quaternion: ", self.x[0:4]
-		print "position: ", self.x[4:7]
-		print "velocity: ", self.x[7:10]
-		print "biasw: ", self.x[10:13]
-		print "biasa: ", self.x[13:16]
+		print "quaternion: ", self.x[0,0:4]
+		print "position: ", self.x[0,4:7]
+		print "velocity: ", self.x[0,7:10]
+		print "biasw: ", self.x[0,10:13]
+		print "biasa: ", self.x[0,13:16]
 
 		gyro_q=np.quaternion(0,0,0,0)
 		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw#-random.gauss(0,0.01) #-bb#
@@ -99,9 +99,9 @@ class EKF:
 		q_dot.x/=2.0
 		q_dot.y/=2.0
 		q_dot.z/=2.0
-		self.xdot[0] = q_dot.w
-		self.xdot[1:4] = q_dot.x, q_dot.y, q_dot.z
-		self.xdot[4:7] = v
+		self.xdot[0,0] = q_dot.w
+		self.xdot[0,1:4] = q_dot.x, q_dot.y, q_dot.z
+		self.xdot[0,4:7] = v
 
 		acc_b_q=np.zeros(4)
 		acc_b_q[1:4]=acc-ba#-random.gauss(0,0.01)#ba-bA
@@ -110,9 +110,9 @@ class EKF:
 		#print "acc_b_q quat: ", acc_b_q
 		acc_n_q=self.q2array(q*acc_b_q*self.q_inverse(q))
 		#print "acc_n_q array: ", acc_n_q
-		self.xdot[7:10]=acc_n_q[1:4]-self.gravity
+		self.xdot[0,7:10]=acc_n_q[1:4]-self.gravity
 		#print "acc_before gravity minus: ", acc_n_q
-		print "final acc_from_model: ", self.xdot[7:10]
+		print "final acc_from_model: ", self.xdot[0,7:10]
 
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
@@ -161,7 +161,7 @@ class EKF:
 		g_n_q=np.quaternion(0,0,0,1)
 		acc_q=self.q_inverse(q)*g_n_q*q #????????normalize
 		#print "acc_q: ", acc_q
-		self.zhat[0:3] = acc_q.x, acc_q.y, acc_q.z
+		self.zhat[0,0:3] = acc_q.x, acc_q.y, acc_q.z
 		self.H[0:3,0:4] = mpl.diff_qstarvq_q(q, GRAVITY)
 
 	def q_normalize(self, q):
