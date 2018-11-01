@@ -27,8 +27,8 @@ class EKF:
 	G=np.zeros((16,6))
 	H=np.zeros((3,16))#observation Matrix
 	R=np.eye(3)#observation noise Matrix
-	gyro_cov=0.0001
-	acc_cov = 0.0001
+	gyro_cov=0.01
+	acc_cov = 0.01
 	gravity_cov=5
 	current_t=0
 	gravity=np.array([0,0,9.8])
