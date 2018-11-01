@@ -4,6 +4,9 @@ import random as random
 #from numpy import quaternion
 from manipulation import *
 from plot1 import live_plotter
+if os.environ.get('DISPLAY','') == '':
+    print('no display found. Using non-interactive Agg backend')
+    mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 GRAVITY=np.array([0,0,9.8])
