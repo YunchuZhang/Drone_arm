@@ -37,7 +37,7 @@ while True:
 		if i ==21:
 			bA = A/20.0
 			bb = B/20.0
-		
+			bA = bA -[0,0,9.8]
 		print bA,bb
 		ekf.predict(gyro, acc, t,bA,bb)
 		imu_count+=1

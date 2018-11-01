@@ -100,7 +100,7 @@ class EKF:
 		self.xdot[4:7] = v
 
 		acc_b_q=np.zeros(4)
-		acc_b_q[1:4]=acc-ba-bA+[0,0,9.8]
+		acc_b_q[1:4]=acc-ba-bA
 		print "acc_b_q: ", acc_b_q
 		acc_b_q=self.array2q(acc_b_q)
 		print "acc_b_q quat: ", acc_b_q
