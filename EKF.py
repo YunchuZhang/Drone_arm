@@ -93,6 +93,7 @@ class EKF:
 
 		gyro_q=np.quaternion(0,0,0,0)
 		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw-random.gauss(0,0.01) #-bb#
+		print "gyro_q: ",gyro_q
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		q_dot.w/=2.0
 		q_dot.x/=2.0
