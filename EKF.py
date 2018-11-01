@@ -39,14 +39,7 @@ class EKF:
 	acc=np.zeros(3)
 	gyro=np.zeros(3)
 	#******************#
-	'''
-	x_vec = np.linspace(0,1,100+1)[0:-1]
-	y_vec = np.zeros(len(x_vec))
-	y_2vec = np.zeros(len(x_vec))
-	line1 = []
-	line2 = []
-	line1_1 = []
-	line2_1 = []'''
+	
 	def __init__(self):
 		initialized = False
 		self.x[0]=1
