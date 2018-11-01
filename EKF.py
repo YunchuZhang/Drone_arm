@@ -91,10 +91,10 @@ class EKF:
 		gyro_q=np.quaternion(0,0,0,0)
 		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw -bb#
 		q_dot=q*gyro_q #matrix multiply this line is correct
-		q_dot.w/=2
-		q_dot.x/=2
-		q_dot.y/=2
-		q_dot.z/=2
+		q_dot.w/=2.0
+		q_dot.x/=2.0
+		q_dot.y/=2.0
+		q_dot.z/=2.0
 		self.xdot[0] = q_dot.w
 		self.xdot[1:4] = q_dot.x, q_dot.y, q_dot.z
 		self.xdot[4:7] = v
