@@ -77,12 +77,12 @@ class EKF:
 		if t <= self.current_t: return
 
 		#dt = t - self.current_t #the time difference between reading time 
-		dt=0.5
+		dt=0.0001
 
 		self.process(gyro, acc,bA,bb) # get state transition matrix. The input parameters are raw data from sensor
-		print "x_qian: ", self.x[10:16]
+		#print "x_qian: ", self.x[10:16]
 		self.x += self.xdot*dt
-		print "x_hou: ", self.x[10:16]
+		#print "x_hou: ", self.x[10:16]
 		self.F=np.eye(16)+self.F*dt
 		self.G=self.G*dt
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
@@ -116,7 +116,7 @@ class EKF:
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		print "q_dot: ", q_dot
 		norm_q=self.q_normalize(q_dot)
-		print "norm_q: ", norm_q
+		#print "norm_q: ", norm_q
 		q_dot.w/=2.0
 		q_dot.x/=2.0
 		q_dot.y/=2.0
@@ -136,13 +136,7 @@ class EKF:
 		#print "acc_n_q array: ", acc_n_q
 		self.xdot[7:10]=acc_n_q[1:4]-self.gravity
 		#print "acc_before gravity minus: ", acc_n_q
-		print "final acc_from_model: ", self.xdot[7:10]
-		phy = math.atan2(self.xdot[7],self.xdot[9])#initial eular angles by using first data from IMU 
-		theta = math.atan2(self.xdot[8],self.xdot[9])
-		psy = math.atan2(self.xdot[8],self.xdot[7])
-		print "=============="
-		print "phy, theta, psy: ", phy, theta, psy
-		print "=============="    
+		print "final acc_from_model: ", self.xdot[7:10]  
 
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
@@ -168,7 +162,7 @@ class EKF:
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
 		#print "self.K: ",self.K
 		self.x += np.dot(self.K,(z-self.zhat))
-		print "z-zhat: ", z-self.zhat
+		#print "z-zhat: ", z-self.zhat
 		I=np.eye(16)
 		print "P qian: ", np.diag(np.mat(self.P))
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
