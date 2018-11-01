@@ -28,7 +28,7 @@ while True:
 	t=time.time()
 	m9a, m9g, m9m = imu.getMotion9()
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
-	acc, gyro = m9a, m9g
+	acc, gyro = -1*m9a, m9g
 	#acc2, gyro2 = m9a2, m9g2
 	print "acc raw data: ", acc, "|| gyro raw data:", gyro
 	
