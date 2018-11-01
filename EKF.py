@@ -143,6 +143,7 @@ class EKF:
 		print "z-zhat: ", z.T-self.zhat.T
 		print "slef.x.T: ", self.x.T
 		print "self K*(z-zhat):", self.K*(z.T-self.zhat.T)
+		print "slef.x.T+K*(z-zhat): ", self.x.T+self.K*(z.T-self.zhat.T)
 		self.x.T = self.x.T+self.K*(z.T-self.zhat.T)
 		print "z-zhat: ", z-self.zhat
 		I=np.mat(np.eye(16))
