@@ -3,11 +3,12 @@ import math
 import os
 import random as random
 #from numpy import quaternion
+import matplotlib as mplt
 from manipulation import *
 from plot1 import live_plotter
 if os.environ.get('DISPLAY','') == '':
     print('no display found. Using non-interactive Agg backend')
-    mpl.use('Agg')
+    mplt.use('Agg')
 import matplotlib.pyplot as plt
 
 GRAVITY=np.array([0,0,9.8])
