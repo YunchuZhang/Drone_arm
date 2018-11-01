@@ -76,6 +76,7 @@ class mpl:
 		y = math.atan2(m[1, 0], m[0, 0])
 		np.array([r, p, y])
 		return rpy
+
 	def mat2quaternion(self, m):
 		q = np.quaternion(0,0,0,0)
 		a = math.sqrt(1 + m[0, 0] + m[1, 1] + m[2, 2])/2.0
@@ -100,7 +101,7 @@ class mpl:
 			[-sp,    sr*cp,             cr*cp]])
 		return m
 	def quaternion2euler(self, q):
-		return mat2euler(quaternion2mat(q))
+		return self.mat2euler(self.quaternion2mat(q))
 
 
 
