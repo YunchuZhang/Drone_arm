@@ -139,7 +139,7 @@ class EKF:
 		#print "self.K: ",self.K
 		#self.x += np.dot(self.K,(z-self.zhat))
 		self.K = self.P*self.H.T*(self.H*self.P*self.H.T+self.R).I
-		self.x += self.K*(z.T-self.zhat.T)
+		self.x.T += self.K*(z.T-self.zhat.T)
 		print "z-zhat: ", z-self.zhat
 		I=np.mat(np.eye(16))
 		print "P qian: ", np.diag(np.mat(self.P))
