@@ -183,7 +183,7 @@ class EKF:
 		return a
 
 	def array2q(self, a):
-		q=np.quaternion(a[0],a[1],a[2],a[3])
+		q=np.quaternion(a[0,0],a[0,1],a[0,2],a[0,3])
 		return q
 
 	def q_vec(self, q):
