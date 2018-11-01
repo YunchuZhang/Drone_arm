@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import os
 import random as random
 #from numpy import quaternion
 from manipulation import *
