@@ -85,7 +85,7 @@ class EKF:
 		bw=self.x[10:13]#what is the initail value of bias?! maybe we could use the first 3 seconds average value
 		ba=self.x[13:16]# when the drone is static as init bias
 		q.w=self.x[0,0]
-		q.x,q.y,q.z=self.x[1:4]
+		q.x,q.y,q.z=self.x[0,1], self.x[0,2], self.x[0,3]
 		print "quaternion: ", self.x[0:4]
 		print "position: ", self.x[4:7]
 		print "velocity: ", self.x[7:10]
