@@ -42,10 +42,10 @@ while True:
 			bb = B/20.0
 			bA = bA -[0,0,9.8]
 		print bA,bb
-		ekf.predict(gyro, acc, t,bA,bb)
+		ekf.predict(gyro, -acc, t,bA,bb)
 		imu_count+=1
 		#if imu_count%10==0:
-		ekf.update(acc,t)
+		ekf.update(-acc,t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print "---------------------------------------------------------------------------------"
 	i = i + 1
