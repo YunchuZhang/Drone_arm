@@ -31,15 +31,14 @@ while True:
 	acc, gyro = m9a, m9g
 	#acc2, gyro2 = m9a2, m9g2
 	print "acc raw data: ", acc, "|| gyro raw data:", gyro
-	print "acc[1]: ", acc[1]
-	if i <= 20:
+	if i <= 10:
 		A = A + acc
 		B = B + gyro
 
 	else : 
-		if i ==21:
-			bA = A/20.0
-			bb = B/20.0
+		if i ==11:
+			bA = A/10.0
+			bb = B/10.0
 			bA = bA -[0,0,9.8]
 		print bA,bb
 
@@ -53,4 +52,4 @@ while True:
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print "---------------------------------------------------------------------------------"
 	i = i + 1
-	#time.sleep(0.5)
+	time.sleep(0.5)

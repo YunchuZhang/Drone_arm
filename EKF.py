@@ -90,6 +90,7 @@ class EKF:
 
 		#!!!!normalize x first 4 terms,i.e. quaternions
 		self.x /= np.linalg.norm(self.x[0:4],ord = 2)
+		print "euler angle:  "mpl.quaternion2euler(self.x[0:4])
 		self.current_t=t
 		self.acc=acc
 		self.gyro=gyro
@@ -150,7 +151,7 @@ class EKF:
 		psy = math.atan2(self.xdot[8],self.xdot[7])
 		print "=============="
 		print "phy, theta, psy: ", phy, theta, psy
-		print "=============="
+		print "=============="    
 
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
