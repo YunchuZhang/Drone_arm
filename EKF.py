@@ -3,7 +3,7 @@ import math
 import random as random
 #from numpy import quaternion
 from manipulation import *
-GRAVITY=np.mat(np.array([0,0,9.8]))
+GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
 class EKF:
 	x=np.mat(np.zeros(16))#16 states q p v bw ba
