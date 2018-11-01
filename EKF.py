@@ -133,6 +133,7 @@ class EKF:
 		self.measurement()
 		#print "self.H: ", self.H
 		temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
+		print "self.R: ", self.R
 		#print "temp_K: ", temp_K
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
 		#print "self.K: ",self.K
