@@ -74,7 +74,7 @@ class mpl:
 		r = math.atan2(m[2, 1], m[2, 2])
 		p = math.asin(-1*m[2, 0])
 		y = math.atan2(m[1, 0], m[0, 0])
-		np.array([r, p, y])
+		rpy=np.array([r, p, y])
 		return rpy
 
 	def mat2quaternion(self, m):
