@@ -139,6 +139,8 @@ class EKF:
 		#print "self.K: ",self.K
 		#self.x += np.dot(self.K,(z-self.zhat))
 		self.K = self.P*self.H.T*(self.H*self.P*self.H.T+self.R).I
+		print "self.K: ",self.K
+		print "z-zhat: ", z.T-self.zhat.T
 		self.x.T = self.x.T+self.K*(z.T-self.zhat.T)
 		print "z-zhat: ", z-self.zhat
 		I=np.mat(np.eye(16))
