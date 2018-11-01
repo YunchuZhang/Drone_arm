@@ -145,7 +145,13 @@ class EKF:
 		self.xdot[7:10]=acc_n_q[1:4]-self.gravity
 		#print "acc_before gravity minus: ", acc_n_q
 		print "final acc_from_model: ", self.xdot[7:10]
-
+		phy = math.atan2(self.xdot[0],self.xdot[2])#initial eular angles by using first data from IMU 
+		theta = math.atan2(self.xdot[1],self.xdot[2])
+		psy = math.atan2(self.xdot[1],self.xdot[0])
+		print "=============="
+		print "phy, theta, psy: ", phy, theta, psy
+		print "=============="
+		
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.F[4:7,7:10]=np.eye(3)
