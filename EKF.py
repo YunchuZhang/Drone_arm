@@ -124,10 +124,8 @@ class EKF:
 		self.line1_1,self.line2_1 = live_plotter(self.x_vec,self.y_vec1,self.line1_1,self.y_2vec1,self.line2_1)
 		self.y_vec1 = np.append(self.y_vec1[1:],0.0)
 		self.y_2vec1 = np.append(self.y_2vec1[1:],0.0)
-
-
-    	self.xdot[4:7] = v
-
+		
+		self.xdot[4:7] = v
 		acc_b_q=np.zeros(4)
 		acc_b_q[1:4]=acc-ba#-random.gauss(0,0.01)#ba-bA
 		#print "acc_b_q: ", acc_b_q
