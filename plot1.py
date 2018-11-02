@@ -60,7 +60,7 @@ def live_plotter_xy(x_vec,y1_data,line1,identifier='',pause_time=0.01):
 
 
 
-def main()
+def main():
     navio.util.check_apm()
 
     parser = argparse.ArgumentParser()
