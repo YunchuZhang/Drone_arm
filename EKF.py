@@ -3,7 +3,7 @@ import math
 import random as random
 #from numpy import quaternion
 from manipulation import *
-from plot1 import *
+from plot1 import live_plotter
 GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
 class EKF:
