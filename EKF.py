@@ -119,13 +119,7 @@ class EKF:
 		self.line1,self.line2 = live_plotter(self.x_vec,self.y_vec,self.line1,self.y_2vec,self.line2)
 		self.y_vec = np.append(self.y_vec[1:],0.0)
 		self.y_2vec = np.append(self.y_2vec[1:],0.0)
-		rand_val3 = self.xdot[2]
-		rand_val4 = self.xdot[3]
-		self.y_vec1[-1] = rand_val3
-		self.y_2vec1[-1] = rand_val4
-		self.line1_1,self.line2_1 = live_plotter(self.x_vec,self.y_vec1,self.line1_1,self.y_2vec1,self.line2_1)
-		self.y_vec1 = np.append(self.y_vec1[1:],0.0)
-		self.y_2vec1 = np.append(self.y_2vec1[1:],0.0)
+
 		
 		self.xdot[4:7] = v
 		acc_b_q=np.zeros(4)

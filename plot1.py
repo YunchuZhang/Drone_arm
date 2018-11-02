@@ -13,7 +13,7 @@ def live_plotter(x_vec,y1_data,line1,y2_data,line2,identifier='',pause_time=0.1)
     if line1==[]:
         # this is the call to matplotlib that allows dynamic plotting
         plt.ion()
-        fig = plt.figure(figsize=(13,6))
+        fig = plt.figure(figsize=(8,6))
         ax = fig.add_subplot(111)
         # create a variable for the line so we can later update it
         line1, = ax.plot(x_vec,y1_data,'-o',alpha=0.8)  
