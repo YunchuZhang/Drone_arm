@@ -60,63 +60,63 @@ def live_plotter_xy(x_vec,y1_data,line1,identifier='',pause_time=0.01):
 
 
 
+def main()
+    navio.util.check_apm()
 
-navio.util.check_apm()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i", help = "Sensor selection: -i [sensor name]. Sensors names: mpu is MPU9250, lsm is LSM9DS1")
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-i", help = "Sensor selection: -i [sensor name]. Sensors names: mpu is MPU9250, lsm is LSM9DS1")
+    if len(sys.argv) == 1:
+        print "Enter parameter"
+        parser.print_help()
+        sys.exit(1)
+    elif len(sys.argv) == 2:
+        sys.exit("Enter sensor name: mpu or lsm")
 
-if len(sys.argv) == 1:
-    print "Enter parameter"
-    parser.print_help()
-    sys.exit(1)
-elif len(sys.argv) == 2:
-    sys.exit("Enter sensor name: mpu or lsm")
+    args = parser.parse_args()
 
-args = parser.parse_args()
-
-if args.i == 'mpu':
-    print "Selected: MPU9250"
-    imu = navio.mpu9250.MPU9250()
-elif args.i == 'lsm':
-    print "Selected: LSM9DS1"
-    imu = navio.lsm9ds1.LSM9DS1()
-else:
-    print "Wrong sensor name. Select: mpu or lsm"
-    sys.exit(1)
-
-
-
-if imu.testConnection():
-    print "Connection established: True"
-else:
-    sys.exit("Connection established: False")
-
-imu.initialize()
-
-time.sleep(1)
+    if args.i == 'mpu':
+        print "Selected: MPU9250"
+        imu = navio.mpu9250.MPU9250()
+    elif args.i == 'lsm':
+        print "Selected: LSM9DS1"
+        imu = navio.lsm9ds1.LSM9DS1()
+    else:
+        print "Wrong sensor name. Select: mpu or lsm"
+        sys.exit(1)
 
 
-    
 
-size = 100
-x_vec = np.linspace(0,1,size+1)[0:-1]
-y_vec = np.zeros(len(x_vec))
-y_2vec = np.zeros(len(x_vec))
-line1 = []
-line2 = []
-while True:
+    if imu.testConnection():
+        print "Connection established: True"
+    else:
+        sys.exit("Connection established: False")
 
-    m9a, m9g, m9m = imu.getMotion9()
-    #rand_val = np.random.randn(1)
-    #rand_val2 = np.random.randn(1)
-    rand_val = m9a[0]
-    rand_val2 = m9a[2]
-    y_vec[-1] = rand_val
-    y_2vec[-1] = rand_val2
-    line1,line2 = live_plotter(x_vec,y_vec,line1,y_2vec,line2)
-    y_vec = np.append(y_vec[1:],0.0)
-    y_2vec = np.append(y_2vec[1:],0.0)
-    time.sleep(0.1)
+    imu.initialize()
+
+    time.sleep(1)
+
+
+        
+
+    size = 100
+    x_vec = np.linspace(0,1,size+1)[0:-1]
+    y_vec = np.zeros(len(x_vec))
+    y_2vec = np.zeros(len(x_vec))
+    line1 = []
+    line2 = []
+    while True:
+
+        m9a, m9g, m9m = imu.getMotion9()
+        #rand_val = np.random.randn(1)
+        #rand_val2 = np.random.randn(1)
+        rand_val = m9a[0]
+        rand_val2 = m9a[2]
+        y_vec[-1] = rand_val
+        y_2vec[-1] = rand_val2
+        line1,line2 = live_plotter(x_vec,y_vec,line1,y_2vec,line2)
+        y_vec = np.append(y_vec[1:],0.0)
+        y_2vec = np.append(y_2vec[1:],0.0)
+        time.sleep(0.1)
 
 
