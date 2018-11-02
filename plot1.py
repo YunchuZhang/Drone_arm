@@ -119,4 +119,5 @@ def main():
         y_2vec = np.append(y_2vec[1:],0.0)
         time.sleep(0.1)
 
-
+if __name__ == '__main__':
+    main()
