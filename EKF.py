@@ -90,7 +90,7 @@ class EKF:
 		np.dot(np.dot(self.G,self.Q),self.G.transpose())
 
 		#!!!!normalize x first 4 terms,i.e. quaternions
-		self.x /= np.linalg.norm(self.x[0:4],ord = 2)
+		self.x[0:4] /= np.linalg.norm(self.x[0:4],ord = 2)
 		print "euler angle:  ", 180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4]))
 		self.save = np.append(self.save,180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4])))
 		np.save('a.npy',self.save)
