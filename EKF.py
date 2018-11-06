@@ -176,7 +176,7 @@ class EKF:
 		acc_q=q*g_n_q*self.q_inverse(q) #????????normalize
 		#print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q.x, acc_q.y, acc_q.z
-		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
+		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY) + self.x[13:16]
 
 	def q_normalize(self, q):
 		sum=math.sqrt(q.w**2+q.x**2+q.y**2+q.z**2)
