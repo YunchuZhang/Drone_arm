@@ -4,7 +4,7 @@ import argparse
 import sys
 import navio.mpu9250
 import navio.util
-from  EKF import *
+from  EKF2 import *
 
 navio.util.check_apm()
 
@@ -18,7 +18,7 @@ else:
 	print "Connection established: False"
 	
 imu.initialize()
-ekf = EKF()
+ekf = EKF2()
 i = 1
 A = np.array([0,0,0])
 B = np.array([0,0,0])
