@@ -30,26 +30,26 @@ while True:
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
 	acc, gyro = m9a, m9g
 	#acc2, gyro2 = m9a2, m9g2
-	print "acc raw data: ", acc, "|| gyro raw data:", gyro
-	if i <= 10:
-		A = A + acc
-		B = B + gyro
+	#print "acc raw data: ", acc, "|| gyro raw data:", gyro
+	#if i <= 10:
+		#A = A + acc
+		#B = B + gyro
 
-	else : 
-		if i ==11:
-			bA = A/10.0
-			bb = B/10.0
-			bA = bA -[0,0,9.8]
-		print bA,bb
+	#else : 
+		#if i ==11:
+			#bA = A/10.0
+			#bb = B/10.0
+			#bA = bA -[0,0,9.8]
+		#print bA,bb
 
-		acc_=np.array([-acc[0],-acc[1],-acc[2]])
-		#print "acc_: ", acc_
-		t=time.time()
-		ekf.predict(gyro, acc, t,bA,bb)
-		imu_count+=1
-		#if imu_count%10==0:
-		ekf.update(acc,t)
+	acc_=np.array([-acc[0],-acc[1],-acc[2]])
+	#print "acc_: ", acc_
+	t=time.time()
+	ekf.predict(gyro, acc, t,bA,bb)
+	imu_count+=1
+	#if imu_count%10==0:
+	ekf.update(acc,t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print "---------------------------------------------------------------------------------"
-	i = i + 1
-	#time.sleep(0.5)
+	#i = i + 1
+	time.sleep(0.5)
