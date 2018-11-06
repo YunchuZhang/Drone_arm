@@ -18,7 +18,7 @@ else:
 	print "Connection established: False"
 	
 imu.initialize()
-ekf = EKF2()
+ekf = EKF()
 i = 1
 A = np.array([0,0,0])
 B = np.array([0,0,0])
