@@ -142,8 +142,8 @@ class EKF:
 		#print "acc_before gravity minus: ", acc_n_q
 		print "final acc_from_model: ", self.xdot[7:10]  
 
-		self.xdot[10:13] = random.gauss(0,math.sqrt(bw_cov))
-		self.xdot[13:16] = random.gauss(0,math.sqrt(ba_cov))
+		self.xdot[10:13] = random.gauss(0,math.sqrt(self.bw_cov))
+		self.xdot[13:16] = random.gauss(0,math.sqrt(self.ba_cov))
 
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
