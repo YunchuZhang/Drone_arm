@@ -44,8 +44,8 @@ class EKF:
 	def __init__(self):
 		initialized = False
 		self.x[0]=1
-		self.Q[0:3,0:3]*=self.gyro_cov
-		self.Q[3:6,3:6]*=self.acc_cov
+		self.Q[0:3,0:3] = np.eye(3)*self.gyro_cov
+		self.Q[3:6,3:6] = np.eye(3)*self.acc_cov
 		self.R*=self.gravity_cov
 		self.x[10:13]=random.gauss(0,0.01)
 		self.x[13:16]=random.gauss(0,0.01)
