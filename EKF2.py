@@ -15,7 +15,7 @@ class EKF:
 	z=np.zeros(3)#real raw data from sensor
 	zhat=np.zeros(3)#H*x_bar
 	P=np.eye(7)#covariance matrix
-	Q=np.zeros(6)#process noise covariance
+	Q=np.zeros([6,6])#process noise covariance
 	F=np.zeros((7,7))#state transition
 	G=np.zeros((7,6))
 	H=np.zeros((3,7))#observation Matrix
