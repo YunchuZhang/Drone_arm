@@ -170,7 +170,7 @@ class EKF:
 		#print "temp_K: ", temp_K
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
 		print "self.K: ",self.K
-		self.x += np.dot(self.K,(z-self.zhat-self.x[13:16]))
+		self.x += np.dot(self.K,(z-self.zhat))
 		#print "z-zhat: ", z-self.zhat
 		I=np.eye(16)
 		print "P qian: ", np.diag(np.mat(self.P))
