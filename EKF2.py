@@ -96,7 +96,7 @@ class EKF:
 		gyro_q[1:4] = gyro
 		print "gyro_q: ",gyro_q
 		q_dot = mpl.q_p(q,gyro_q) #matrix multiply this line is correct
-		q_dot *= 0.5
+		q_dot[0:4] = q_dot[0:4]*0.5
 		self.xdot[0:4] = q_dot
 		print "qdot[0:4]: ", self.xdot[0:4]
 		
