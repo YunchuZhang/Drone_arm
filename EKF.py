@@ -23,13 +23,17 @@ class EKF:
 	z=np.zeros(3)#real raw data from sensor
 	zhat=np.zeros(3)#H*x_bar
 	P=np.eye(16)#covariance matrix
-	Q=np.zeros((6,6))#process noise covariance
+	Q=np.zeros((12,12))#process noise covariance
 	F=np.zeros((16,16))#state transition
-	G=np.zeros((16,6))
+	G=np.zeros((16,12))
 	H=np.zeros((3,16))#observation Matrix
 	R=np.eye(3)#observation noise Matrix
 	gyro_cov=0.01
 	acc_cov = 0.01
+
+	bw_cov=0.01
+	ba_cov=0.01
+
 	gravity_cov=5
 	current_t=0
 	gravity=np.array([0,0,9.8])
@@ -46,25 +50,27 @@ class EKF:
 		self.x[0]=1
 		self.Q[0:3,0:3] = np.eye(3)*self.gyro_cov
 		self.Q[3:6,3:6] = np.eye(3)*self.acc_cov
-		self.R*=self.gravity_cov
-		self.x[10:13]=random.gauss(0,0.01)
-		self.x[13:16]=random.gauss(0,0.01)
+		self.Q[6:9,6:9] = np.eye(3)*self.bw_cov
+		self.Q[9:12,9:12] = np.eye(3)*self.ba_cov
+		self.R *= self.gravity_cov
+		self.x[10:13] = random.gauss(0,0.1)
+		self.x[13:16] = random.gauss(0,0.1)
 
 		self.initialized = False
 		self.imu_initialized = False
 		self.magnetic_initialized = False
 	def predict(self, gyro, acc, t,bA,bb):#t is the time we read data from sensor
-		if self.imu_initialized ==False:
-			self.imu_initialized=True
+		if self.imu_initialized == False:
+			self.imu_initialized = True
 			self.initialized = True
-			self.current_t=t
+			self.current_t = t
 			phy = math.atan2(acc[0],acc[2])#initial eular angles by using first data from IMU 
 			theta = math.atan2(acc[1],acc[2])
-			phy1=phy*180/math.pi
-			theta1=theta*180/math.pi	
-			rpy=np.array([phy, theta, 0])
+			phy1 = phy*180/math.pi
+			theta1 = theta*180/math.pi	
+			rpy = np.array([phy, theta, 0])
 			print "phy theta: ", phy1, theta1
-			q_init=mpl.euler2quaternion(rpy)# returns quaternion
+			q_init = mpl.euler2quaternion(rpy)# returns quaternion
 			self.x[0] = q_init.w
 			self.x[1:4] = q_init.x,q_init.y,q_init.z
 		if t <= self.current_t: return
@@ -136,14 +142,19 @@ class EKF:
 		#print "acc_before gravity minus: ", acc_n_q
 		print "final acc_from_model: ", self.xdot[7:10]  
 
+		self.xdot[10:13] = random.gauss(0,math.sqrt(bw_cov))
+		self.xdot[13:16] = random.gauss(0,math.sqrt(ba_cov))
+
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.F[4:7,7:10]=np.eye(3)
 		self.F[7:10,0:4]=mpl.diff_qvqstar_q(q,self.q2array(acc_b_q)[1:4])
 		self.F[7:10,13:16]=-mpl.diff_qstarvq_v(q)
 
-		self.G[0:4,0:3]=0.5*mpl.diff_pq_q(q)[0:4,1:4]
-		self.G[7:10,3:6]=mpl.diff_qstarvq_v(q)
+		self.G[0:4,0:3]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
+		self.G[7:10,3:6]=-mpl.diff_qstarvq_v(q)
+		self.G[10:13,6:9] = np.eye(3)
+		self.G[13:16,9:12] = np.eye(3)
 
 
 	def update(self, acc, t):#acc is the raw data from IMU
