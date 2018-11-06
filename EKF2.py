@@ -93,7 +93,7 @@ class EKF:
 		print "quaternion: ", self.x[0:4]
 		print "biasa: ", self.x[4:7]
 
-		gyro_q = np.array([0,0,0,0])
+		gyro_q = np.array([0.0,0.0,0.0,0.0])
 		gyro_q[1:4] = gyro
 		print "gyro_q: ",gyro_q
 		q_dot = mpl.q_p(q,gyro_q) #matrix multiply this line is correct
