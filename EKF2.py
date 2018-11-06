@@ -87,7 +87,7 @@ class EKF:
 
 	def process(self, gyro, acc,bA,bb):
 		print "gyro: ", gyro
-		q=np.array([0,0,0,0])#share addtress just make another name
+		q=np.array([0.0,0.0,0.0,0.0])#share addtress just make another name
 		ba=self.x[4:7]#what is the initail value of bias?! maybe we could use the first 3 seconds average value# when the drone is static as init bias
 		q=self.x[0:4]
 		print "quaternion: ", self.x[0:4]
@@ -132,10 +132,10 @@ class EKF:
 		self.x[0:4] /= np.linalg.norm(self.x[0:4],ord = 2)
 
 	def measurement(self): #acc is model result
-		q=np.array([0,0,0,0])
+		q=np.array([0.0,0.0,0.0,0.0])
 		q=self.x[0:4]
 		#ba=self.x[13:16]
-		g_n_q=np.array([0,0,0,1])
+		g_n_q=np.array([0.0,0.0,0.0,1.0])
 		acc_q=mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
 		#print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q[1:4]
