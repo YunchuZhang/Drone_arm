@@ -44,7 +44,7 @@ while True:
 
 	acc_=np.array([-acc[0],-acc[1],-acc[2]])
 	#print "acc_: ", acc_
-	t=time.time()
+	#t=time.time()
 	ekf.predict(gyro, acc, t,bA,bb)
 	imu_count+=1
 	#if imu_count%10==0:
