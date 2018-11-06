@@ -115,7 +115,7 @@ class EKF:
 		print "biasa: ", self.x[13:16]
 
 		gyro_q=np.quaternion(0,0,0,0)
-		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw#-random.gauss(0,0.01) #-bb#
+		gyro_q.x, gyro_q.y, gyro_q.z=gyro-bw #-random.gauss(0,0.01) #-bb#
 		print "gyro_q: ",gyro_q
 		q_dot=q*gyro_q #matrix multiply this line is correct
 		print "q_dot: ", q_dot
@@ -169,7 +169,7 @@ class EKF:
 		temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
 		#print "temp_K: ", temp_K
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
-		#print "self.K: ",self.K
+		print "self.K: ",self.K
 		self.x += np.dot(self.K,(z-self.zhat-self.x[13:16]))
 		#print "z-zhat: ", z-self.zhat
 		I=np.eye(16)
