@@ -159,7 +159,7 @@ class EKF:
 		#print "temp_K: ", temp_K
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
 		#print "self.K: ",self.K
-		self.x += np.dot(self.K,(z-self.zhat))
+		self.x += np.dot(self.K,(z-self.zhat-self.x[13:16]))
 		#print "z-zhat: ", z-self.zhat
 		I=np.eye(16)
 		print "P qian: ", np.diag(np.mat(self.P))
@@ -176,7 +176,7 @@ class EKF:
 		acc_q=q*g_n_q*self.q_inverse(q) #????????normalize
 		#print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q.x, acc_q.y, acc_q.z
-		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY) + self.x[13:16]
+		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
 
 	def q_normalize(self, q):
 		sum=math.sqrt(q.w**2+q.x**2+q.y**2+q.z**2)
