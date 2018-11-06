@@ -148,7 +148,7 @@ class EKF:
 		self.F[0:4,0:4]=0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,10:13]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.F[4:7,7:10]=np.eye(3)
-		self.F[7:10,0:4]=mpl.diff_qvqstar_q(q,self.q2array(acc_b_q)[1:4])
+		self.F[7:10,0:4]=mpl.diff_qstarvq_q(q,self.q2array(acc_b_q)[1:4])
 		self.F[7:10,13:16]=-mpl.diff_qstarvq_v(q)
 
 		self.G[0:4,0:3]=-0.5*mpl.diff_pq_q(q)[0:4,1:4]
