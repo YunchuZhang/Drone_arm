@@ -17,7 +17,7 @@ if imu2.testConnection():
 else:
 	print "Connection established: False"
 	
-imu.initialize()
+imu2.initialize()
 ekf = EKF()
 i = 1
 A = np.array([0,0,0])
