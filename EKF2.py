@@ -121,13 +121,15 @@ class EKF:
 		self.G[7:10,3:6] = np.eye(3)
 
 
-	def update(self, acc, t):#acc is the raw data from IMU
+	def update(self, acc, gyro, t):#acc is the raw data from IMU
 		if self.initialized==False:
 			self.initialized = True
 			self.current_t = t
 		if t < self.current_t: return
 
-		z=acc/np.linalg.norm(acc,ord=2)
+		z=np.zeros(6)
+		z[0:3]=acc/np.linalg.norm(acc,ord=2)
+		z[3:6]=gyro
 		self.measurement()
 		#print "self.H: ", self.H
 		temp_K = np.linalg.inv(np.dot(self.H, np.dot(self.P,self.H.transpose()))+self.R)
