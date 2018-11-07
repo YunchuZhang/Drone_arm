@@ -102,6 +102,7 @@ class EKF:
 		print "quaternion: ", self.x[0:4]
 		print "omega: ", self.x[4:7]
 		print "biasw: ", self.x[7:10]
+		print "biasa: ", self.x[10:13]
 
 		gyro_q = np.array([0.0,0.0,0.0,0.0])
 		gyro_q[1:4] = gyro - bw
