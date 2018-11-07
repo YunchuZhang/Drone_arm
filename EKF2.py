@@ -143,7 +143,7 @@ class EKF:
 		print "P qian: ", np.diag(np.mat(self.P))
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
 		print "P hou: ", np.diag(np.mat(self.P))
-		#self.x[0:4] /= np.linalg.norm(self.x[0:4],ord = 2)
+		self.x[0:4] /= np.linalg.norm(self.x[0:4],ord = 2)
 
 	def measurement(self): #acc is model result
 		q=np.array([0.0,0.0,0.0,0.0])
