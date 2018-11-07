@@ -3,7 +3,7 @@ import math
 import os
 import random as random
 #from numpy import quaternion
-import matplotlib as mplt
+#import matplotlib as mplt
 from manipulation2 import *
 
 GRAVITY=np.array([0,0,-9.8])
