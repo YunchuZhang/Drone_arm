@@ -10,8 +10,8 @@ GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
 
 class EKF:
-	x=np.zeros(10)#7 states q p v bw ba
-	xdot=np.zeros(10)#7 states derivaties
+	x=np.zeros(10)#10 states q p v bw ba
+	xdot=np.zeros(10)#10 states derivaties
 	z=np.zeros(3)#real raw data from sensor
 	zhat=np.zeros(3)#H*x_bar
 	P=np.eye(10)#covariance matrix
@@ -135,7 +135,7 @@ class EKF:
 		print "self.K: ",self.K
 		self.x += np.dot(self.K,(z-self.zhat))
 		#print "z-zhat: ", z-self.zhat
-		I=np.eye(7)
+		I=np.eye(10)
 		print "P qian: ", np.diag(np.mat(self.P))
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
 		print "P hou: ", np.diag(np.mat(self.P))
