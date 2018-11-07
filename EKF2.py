@@ -89,6 +89,7 @@ class EKF:
 
 
 	def process(self, gyro, acc,bA,bb):
+		print "acc: ", acc
 		print "gyro: ", gyro
 		q=np.array([0.0,0.0,0.0,0.0])#share addtress just make another name
 		omega=self.x[4:7]
