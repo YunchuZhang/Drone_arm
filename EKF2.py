@@ -10,19 +10,20 @@ GRAVITY=np.array([0,0,9.8])
 mpl = mpl()
 
 class EKF:
-	x=np.zeros(7)#7 states q p v bw ba
-	xdot=np.zeros(7)#7 states derivaties
+	x=np.zeros(10)#7 states q p v bw ba
+	xdot=np.zeros(10)#7 states derivaties
 	z=np.zeros(3)#real raw data from sensor
 	zhat=np.zeros(3)#H*x_bar
-	P=np.eye(7)#covariance matrix
+	P=np.eye(10)#covariance matrix
 	Q=np.zeros([6,6])#process noise covariance
-	F=np.zeros((7,7))#state transition
-	G=np.zeros((7,6))
-	H=np.zeros((3,7))#observation Matrix
+	F=np.zeros((10,10))#state transition
+	G=np.zeros((10,6))
+	H=np.zeros((3,10))#observation Matrix
 	R=np.eye(3)#observation noise Matrix
 	gyro_cov=0.01
 	acc_cov = 0.01
 
+	lamda=0.001
 	bw_cov=0.01
 	ba_cov=0.01
 
@@ -40,7 +41,7 @@ class EKF:
 		initialized = False
 		self.x[0]=1
 		self.Q[0:3,0:3] = np.eye(3)*self.gyro_cov
-		self.Q[3:6,3:6] = np.eye(3)*self.ba_cov
+		self.Q[3:6,3:6] = np.eye(3)*self.bw_cov
 		self.R *= self.gravity_cov
 
 		self.initialized = False
@@ -69,10 +70,12 @@ class EKF:
 
 		self.process(gyro,acc,bA,bb) # get state transition matrix. The input parameters are raw data from sensor
 		#print "x_qian: ", self.x[10:16]
-		self.x += self.xdot*dt
+		self.x[0:4] += self.xdot[0:4]*dt
+		self.x[7:10] += self.xdot[7:10]*dt
 		#print "x_hou: ", self.x[10:16]
-		self.F=np.eye(7)+self.F*dt
-		self.G=self.G*dt
+		self.F[0:4,0:4]=np.eye(4)+self.F[0:4,0:4]*dt
+		self.F[7:10,7:10]=np.eye(3)+self.F[7:10,7;10]*dt
+		#self.G=self.G*dt
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
 		np.dot(np.dot(self.G,self.Q),self.G.transpose())
 
@@ -88,26 +91,33 @@ class EKF:
 	def process(self, gyro, acc,bA,bb):
 		print "gyro: ", gyro
 		q=np.array([0.0,0.0,0.0,0.0])#share addtress just make another name
-		ba=self.x[4:7]#what is the initail value of bias?! maybe we could use the first 3 seconds average value# when the drone is static as init bias
+		omega=self.x[4:7]
+		bw=self.x[7:10]#what is the initail value of bias?! maybe we could use the first 3 seconds average value# when the drone is static as init bias
 		q=self.x[0:4]
 		print "quaternion: ", self.x[0:4]
-		print "biasa: ", self.x[4:7]
+		print "omega: ", self.x[4:7]
+		print "biasw: ", self.x[7:10]
 
 		gyro_q = np.array([0.0,0.0,0.0,0.0])
-		gyro_q[1:4] = gyro
+		gyro_q[1:4] = gyro - bw
 		print "gyro_q: ",gyro_q
 		q_dot = mpl.q_p(q,gyro_q) #matrix multiply this line is correct
 		q_dot[0:4] = q_dot[0:4]*0.5
-		self.xdot[0:4] = q_dot
+		self.xdot[0:4] = q_dot	
 		print "qdot[0:4]: ", self.xdot[0:4]
-		
+		self.x[4:7] = gyro_q[1:4]
 	
-		self.xdot[4:7] = random.gauss(0,math.sqrt(self.ba_cov))
+		self.xdot[7:10] = -lamda*self.x[7:10]
 
 		self.F[0:4,0:4] = 0.5*mpl.diff_pq_p(gyro_q)
+		self.F[0:4,4:7] = 0.5*mpl.diff_pq_q(q)
+		self.F[4:7,7:10] = -np.eye(3)
+		self.F[7:10,7:10] = -lamda*np.eye(3)
 
-		self.G[0:4,0:3] = -0.5*mpl.diff_pq_q(q)[0:4,1:4]
-		self.G[4:7,3:6] = np.eye(3)
+		#self.G[0:4,0:3] = -0.5*mpl.diff_pq_q(q)[0:4,1:4]
+		#self.G[4:7,3:6] = np.eye(3)
+		self.G[4:7,0:3] = eye(3)
+		self.G[7:10,3:6] = eye(3)
 
 
 	def update(self, acc, t):#acc is the raw data from IMU
