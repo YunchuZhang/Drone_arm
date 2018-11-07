@@ -48,7 +48,7 @@ while True:
 	ekf.predict(gyro, acc_, t,bA,bb)
 	imu_count+=1
 	#if imu_count%10==0:
-	ekf.update(acc, gyro,t)
+	ekf.update(acc_, gyro,t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print "---------------------------------------------------------------------------------"
 	#i = i + 1
