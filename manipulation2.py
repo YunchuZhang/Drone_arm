@@ -14,7 +14,7 @@ class mpl:
 		pv = p[1:4]
 		D = np.zeros((4,4))
 		D[0,0] = p0
-		D[0,1:4] = -1*pv
+		D[0,1:4] = -1.0*pv
 		D[1:4,0] = pv.transpose()
 		D[1:4,1:4] = np.eye(3)*p0 + self.skew_symetric(pv)
 		return D
@@ -23,7 +23,7 @@ class mpl:
 		qv = q[1:4]
 		D = np.zeros((4,4))
 		D[0,0] = q0
-		D[0,1:4] = -1*qv
+		D[0,1:4] = -1.0*qv
 		D[1:4,0] = qv.transpose()
 		D[1:4,1:4] = np.eye(3)*q0 - self.skew_symetric(qv)
 		return D
