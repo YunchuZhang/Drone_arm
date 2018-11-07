@@ -74,7 +74,7 @@ class EKF:
 		self.x[7:10] += self.xdot[7:10]*dt
 		#print "x_hou: ", self.x[10:16]
 		self.F[0:4,0:4]=np.eye(4)+self.F[0:4,0:4]*dt
-		self.F[7:10,7:10]=np.eye(3)+self.F[7:10,7;10]*dt
+		self.F[7:10,7:10]=np.eye(3)+self.F[7:10,7:10]*dt
 		#self.G=self.G*dt
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
 		np.dot(np.dot(self.G,self.Q),self.G.transpose())
