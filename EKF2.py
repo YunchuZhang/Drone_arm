@@ -57,7 +57,7 @@ class EKF:
 			theta = math.atan2(-acc[1],-acc[2])
 			phy1 = phy*180/math.pi
 			theta1 = theta*180/math.pi	
-			rpy = np.array([phy, theta, 0])
+			rpy = np.array([theta, phy, 0])
 			print "phy theta: ", phy1, theta1
 			q_init = mpl.euler2quaternion(rpy)# returns quaternion
 			self.x[0] = q_init.w
