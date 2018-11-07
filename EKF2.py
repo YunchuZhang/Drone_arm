@@ -24,10 +24,10 @@ class EKF:
 	acc_cov = 0.01
 
 	lamda=0.001
-	bw_cov=0.01
-	ba_cov=0.01
+	bw_cov=0.0001
+	ba_cov=0.0001
 
-	gravity_cov=0.05
+	gravity_cov=0.01
 	current_t=0
 
 	initialized = False
