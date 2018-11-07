@@ -110,7 +110,7 @@ class EKF:
 		self.xdot[7:10] = -self.lamda*self.x[7:10]
 
 		self.F[0:4,0:4] = 0.5*mpl.diff_pq_p(gyro_q)
-		self.F[0:4,4:7] = 0.5*mpl.diff_pq_q(q)
+		self.F[0:4,4:7] = 0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.F[4:7,7:10] = -np.eye(3)
 		self.F[7:10,7:10] = -self.lamda*np.eye(3)
 
