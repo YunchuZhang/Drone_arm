@@ -91,6 +91,7 @@ class EKF:
 
 	def process(self, gyro, acc,bA,bb):
 		print "gyro: ", gyro
+		print "acc: ", acc
 		q=np.array([0.0,0.0,0.0,0.0])#share addtress just make another name
 		omega=self.x[4:7]
 		bw=self.x[7:10]#what is the initail value of bias?! maybe we could use the first 3 seconds average value# when the drone is static as init bias
