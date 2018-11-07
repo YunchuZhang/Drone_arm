@@ -12,14 +12,14 @@ mpl = mpl()
 class EKF:
 	x=np.zeros(10)#10 states q p v bw ba
 	xdot=np.zeros(10)#10 states derivaties
-	z=np.zeros(3)#real raw data from sensor
-	zhat=np.zeros(3)#H*x_bar
+	z=np.zeros(6)#real raw data from sensor
+	zhat=np.zeros(6)#H*x_bar
 	P=np.eye(10)#covariance matrix
 	Q=np.zeros([6,6])#process noise covariance
 	F=np.zeros((10,10))#state transition
 	G=np.zeros((10,6))
-	H=np.zeros((3,10))#observation Matrix
-	R=np.eye(3)#observation noise Matrix
+	H=np.zeros((6,10))#observation Matrix
+	R=np.eye(6)#observation noise Matrix
 	gyro_cov=0.01
 	acc_cov = 0.01
 
@@ -42,7 +42,8 @@ class EKF:
 		self.x[0]=1
 		self.Q[0:3,0:3] = np.eye(3)*self.gyro_cov
 		self.Q[3:6,3:6] = np.eye(3)*self.bw_cov
-		self.R *= self.gravity_cov
+		self.R[0:3,0:3] *= self.gravity_cov
+		self.R[3:6,3:6] *= self.gyro_cov
 
 		self.initialized = False
 		self.imu_initialized = False
@@ -149,7 +150,10 @@ class EKF:
 		acc_q=mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
 		print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q[1:4]
+		self.zhat[3:6] = self.x[4:7]+self.x[7:10]#wb+bw
 		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
+		self.H[3:6,4:7] = np.eye(3)
+		self.H[3:6,7:10] = np.eye(3)
 
 	def q_normalize(self, q):
 		sum=math.sqrt(q.w**2+q.x**2+q.y**2+q.z**2)
