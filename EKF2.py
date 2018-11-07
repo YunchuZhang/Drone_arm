@@ -6,7 +6,7 @@ import random as random
 import matplotlib as mplt
 from manipulation2 import *
 
-GRAVITY=np.array([0,0,9.8])
+GRAVITY=np.array([0,0,-9.8])
 mpl = mpl()
 
 class EKF:
@@ -146,7 +146,7 @@ class EKF:
 		q=np.array([0.0,0.0,0.0,0.0])
 		q=self.x[0:4]
 		#ba=self.x[13:16]
-		g_n_q=np.array([0.0,0.0,0.0,1.0])
+		g_n_q=np.array([0.0,0.0,0.0,-1.0])
 		acc_q=mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
 		#print "acc_q: ", acc_q
 		self.zhat[0:3] = acc_q[1:4]
