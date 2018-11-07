@@ -116,8 +116,8 @@ class EKF:
 
 		#self.G[0:4,0:3] = -0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		#self.G[4:7,3:6] = np.eye(3)
-		self.G[4:7,0:3] = eye(3)
-		self.G[7:10,3:6] = eye(3)
+		self.G[4:7,0:3] = np.eye(3)
+		self.G[7:10,3:6] = np.eye(3)
 
 
 	def update(self, acc, t):#acc is the raw data from IMU
