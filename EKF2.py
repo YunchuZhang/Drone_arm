@@ -48,6 +48,7 @@ class EKF:
 		self.imu_initialized = False
 		self.magnetic_initialized = False
 	def predict(self, gyro, acc, t,bA,bb):#t is the time we read data from sensor
+		print "acc: ", acc
 		if self.imu_initialized == False:
 			self.imu_initialized = True
 			self.initialized = True
@@ -89,7 +90,6 @@ class EKF:
 
 
 	def process(self, gyro, acc,bA,bb):
-		print "acc: ", acc
 		print "gyro: ", gyro
 		q=np.array([0.0,0.0,0.0,0.0])#share addtress just make another name
 		omega=self.x[4:7]
