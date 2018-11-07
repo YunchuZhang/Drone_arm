@@ -23,7 +23,7 @@ class EKF:
 	gyro_cov=0.0025
 	acc_cov = 0.01
 
-	lamda=0.0
+	lamda=0.0001
 	bw_cov=0.0000001
 	ba_cov=0.0000001
 
@@ -119,8 +119,8 @@ class EKF:
 		self.F[0:4,0:4] = 0.5*mpl.diff_pq_p(gyro_q)
 		self.F[0:4,4:7] = 0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		self.F[4:7,7:10] = -np.eye(3)
-		self.F[7:10,7:10] = -self.lamda*np.eye(3)
-		self.F[10:13,10:13] = -self.lamda*np.eye(3)
+		self.F[7:10,7:10] = self.lamda*np.eye(3)
+		self.F[10:13,10:13] = self.lamda*np.eye(3)
 
 		#self.G[0:4,0:3] = -0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		#self.G[4:7,3:6] = np.eye(3)
