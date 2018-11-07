@@ -20,7 +20,7 @@ class EKF:
 	G=np.zeros((10,6))
 	H=np.zeros((6,10))#observation Matrix
 	R=np.eye(6)#observation noise Matrix
-	gyro_cov=0.005
+	gyro_cov=0.0025
 	acc_cov = 0.01
 
 	lamda=0.0001
