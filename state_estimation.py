@@ -13,9 +13,9 @@ imu2 = navio.lsm9ds1.LSM9DS1()
 imu_count=0
 
 if imu2.testConnection():
-    print "Connection established: True"
+    print ("Connection established: True")
 else:
-	print "Connection established: False"
+	print ("Connection established: False")
 	
 imu2.initialize()
 ekf = EKF()
