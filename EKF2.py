@@ -27,7 +27,7 @@ class EKF:
 	bw_cov=0.01
 	ba_cov=0.01
 
-	gravity_cov=5
+	gravity_cov=0.5
 	current_t=0
 
 	initialized = False
