@@ -23,11 +23,11 @@ class EKF:
 	gyro_cov=0.01
 	acc_cov = 0.01
 
-	lamda=0.0
+	lamda=0.001
 	bw_cov=0.01
 	ba_cov=0.01
 
-	gravity_cov=0.5
+	gravity_cov=0.05
 	current_t=0
 
 	initialized = False
