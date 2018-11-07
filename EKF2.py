@@ -164,6 +164,7 @@ class EKF:
 		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
 		self.H[3:6,4:7] = np.eye(3)
 		self.H[3:6,7:10] = np.eye(3)
+		self.H[0:3,10:13] = np.eye(3)
 
 	def q_normalize(self, q):
 		sum=math.sqrt(q.w**2+q.x**2+q.y**2+q.z**2)
