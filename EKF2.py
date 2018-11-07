@@ -59,7 +59,7 @@ class EKF:
 			phy1 = phy*180/math.pi
 			theta1 = theta*180/math.pi	
 			rpy = np.array([theta, phy, 0])
-			print "phy theta: ", phy1, theta1
+			print ("phy theta: ", phy1, theta1)
 			q_init = mpl.euler2quaternion(rpy)# returns quaternion
 			self.x[0] = q_init.w
 			self.x[1:4] = q_init.x,q_init.y,q_init.z
@@ -67,7 +67,7 @@ class EKF:
 
 		dt = t - self.current_t #the time difference between reading time 
 		#dt=0.001
-		print "dt:  ", dt
+		print ("dt:  ", dt)
 		#dt=0.0001
 
 		self.process(gyro,acc,bA,bb) # get state transition matrix. The input parameters are raw data from sensor
@@ -85,7 +85,7 @@ class EKF:
 
 		#!!!!normalize x first 4 terms,i.e. quaternions
 		self.x[0:4] /= np.linalg.norm(self.x[0:4],ord = 2)
-		print "euler angle:  ", 180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4]))
+		print ("euler angle:  ", 180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4])))
 
 		self.current_t=t
 		self.acc=acc
@@ -93,24 +93,24 @@ class EKF:
 
 
 	def process(self, gyro, acc,bA,bb):
-		print "gyro: ", gyro
-		print "acc: ", acc
+		print ("gyro: ", gyro)
+		print ("acc: ", acc)
 		q=np.array([0.0,0.0,0.0,0.0])#share addtress just make another name
 		omega=self.x[4:7]
 		bw=self.x[7:10]#what is the initail value of bias?! maybe we could use the first 3 seconds average value# when the drone is static as init bias
 		q=self.x[0:4]
-		print "quaternion: ", self.x[0:4]
-		print "omega: ", self.x[4:7]
-		print "biasw: ", self.x[7:10]
-		print "biasa: ", self.x[10:13]
+		print ("quaternion: ", self.x[0:4])
+		print ("omega: ", self.x[4:7])
+		print ("biasw: ", self.x[7:10])
+		print ("biasa: ", self.x[10:13])
 
 		gyro_q = np.array([0.0,0.0,0.0,0.0])
 		gyro_q[1:4] = gyro - bw
-		print "gyro_q: ",gyro_q
+		print ("gyro_q: ",gyro_q)
 		q_dot = mpl.q_p(q,gyro_q) #matrix multiply this line is correct
 		q_dot[0:4] = q_dot[0:4]*0.5
 		self.xdot[0:4] = q_dot	
-		print "qdot[0:4]: ", self.xdot[0:4]
+		print ("qdot[0:4]: ", self.xdot[0:4])
 		self.x[4:7] = gyro_q[1:4]
 	
 		self.xdot[7:10] = -self.lamda*self.x[7:10]
@@ -145,11 +145,11 @@ class EKF:
 		self.K = np.dot(np.dot(self.P,self.H.transpose()),temp_K)
 		#print "self.K: ",self.K
 		self.x += np.dot(self.K,(z-self.zhat))
-		print "z-zhat: ", z-self.zhat
+		print ("z-zhat: ", z-self.zhat)
 		I=np.eye(13)
-		print "P qian: ", np.diag(np.mat(self.P))
+		print ("P qian: ", np.diag(np.mat(self.P)))
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
-		print "P hou: ", np.diag(np.mat(self.P))
+		print ("P hou: ", np.diag(np.mat(self.P)))
 		self.x[0:4] /= np.linalg.norm(self.x[0:4],ord = 2)
 
 	def measurement(self): #acc is model result
@@ -158,7 +158,7 @@ class EKF:
 		#ba=self.x[13:16]
 		g_n_q=np.array([0.0,0.0,0.0,-1.0])
 		acc_q=mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
-		print "acc_q: ", acc_q
+		print ("acc_q: ", acc_q)
 		self.zhat[0:3] = acc_q[1:4]+self.x[10:13]
 		self.zhat[3:6] = self.x[4:7]+self.x[7:10]#wb+bw
 		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
