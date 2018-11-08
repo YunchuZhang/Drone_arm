@@ -2,7 +2,7 @@ import numpy as np
 import math
 import os
 import random as random
-from numpy import quaternion
+#from numpy import quaternion
 import matplotlib as mplt
 from manipulation2 import *
 
