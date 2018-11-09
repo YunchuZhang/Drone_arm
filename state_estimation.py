@@ -46,7 +46,7 @@ while True:
 	gyro_=np.array([gyro[1],gyro[0],gyro[2]])
 	#print "acc_: ", acc_
 	t=time.time()
-	ekf.predict(gyro_, acc_, t,bA,bb)
+	ekf.predict(gyro_, acc_, t)
 	imu_count+=1
 	#if imu_count%10==0:
 	ekf.update(acc_, gyro_,t)
