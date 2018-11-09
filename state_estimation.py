@@ -42,13 +42,14 @@ while True:
 			#bA = bA -[0,0,9.8]
 		#print bA,bb
 
-	acc_=np.array([acc[0],acc[1],-acc[2]])
+	acc_=np.array([acc[1],acc[0],-acc[2]])
+	gyro_=np.array(gyro[1],gyro[0],gyro[2])
 	#print "acc_: ", acc_
 	t=time.time()
-	ekf.predict(gyro, acc_, t,bA,bb)
+	ekf.predict(gyro_, acc_, t,bA,bb)
 	imu_count+=1
 	#if imu_count%10==0:
-	ekf.update(acc_, gyro,t)
+	ekf.update(acc_, gyro_,t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print ("---------------------------------------------------------------------------------")
 	#i = i + 1
