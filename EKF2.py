@@ -24,8 +24,8 @@ class EKF:
 	acc_cov = 0.25
 
 	lamda=0.01
-	bw_cov=0.0000001
-	ba_cov=0.0000001
+	bw_cov=0.001
+	ba_cov=0.001
 
 	gravity_cov=0.005
 	current_t=0
