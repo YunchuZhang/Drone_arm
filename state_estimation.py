@@ -55,4 +55,4 @@ while True:
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print ("---------------------------------------------------------------------------------")
 	#i = i + 1
-	time.sleep(0.2)
+	#time.sleep(0.2)
