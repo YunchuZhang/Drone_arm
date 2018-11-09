@@ -23,7 +23,7 @@ class EKF:
 	gyro_cov=0.0025
 	acc_cov = 0.25
 
-	lamda=0.001
+	lamda=0.01
 	bw_cov=0.0000001
 	ba_cov=0.0000001
 
