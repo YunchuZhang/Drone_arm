@@ -48,7 +48,7 @@ while True:
 	t=time.time()
 	ekf.predict(gyro_, acc_, t)
 	imu_count+=1
-	if imu_count%20==0:
+	if imu_count%10==0:
 		ekf.predict(gyro_, acc_, t)
 		print("UPDATE_:")
 		ekf.update(acc_, gyro_,t)
