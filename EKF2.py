@@ -196,10 +196,10 @@ class EKF:
 		return q_vec
 
 	def angle(self,a):
-		if a<0:
+		if a<-math.pi*0.5:
 			print("in1")
 			a+=math.pi
-		elif a>0:
+		elif a>math.pi*0.5:
 			print("in2")
 			a-=math.pi
 		return a
