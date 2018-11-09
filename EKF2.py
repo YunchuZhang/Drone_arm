@@ -54,8 +54,12 @@ class EKF:
 			self.imu_initialized = True
 			self.initialized = True
 			self.current_t = t
-			phy = math.atan2(acc[0],-acc[2])#initial eular angles by using first data from IMU 
-			theta = math.atan2(-acc[1],-acc[2])
+			#phy = math.atan(acc[0],-acc[2])#initial eular angles by using first data from IMU 
+			#theta = math.atan(-acc[1],-acc[2])
+			phy = math.atan2(acc[0],acc[2])#initial eular angles by using first data from IMU 
+			theta = math.atan2(acc[1],acc[2])
+			phy=self.angle(phy)
+			theta=self.angle(theta)
 			phy1 = phy*180/math.pi
 			theta1 = theta*180/math.pi	
 			rpy = np.array([theta, phy, 0])
@@ -190,5 +194,12 @@ class EKF:
 
 	def q_vec(self, q):
 		return q_vec
+
+	def angle(self,a):
+		if a<0:
+			a+=math.pi
+		elif a>0:
+			a-=math.pi
+		return a
 
 	####
