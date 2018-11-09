@@ -21,13 +21,13 @@ class EKF:
 	H=np.zeros((6,13))#observation Matrix
 	R=np.eye(6)#observation noise Matrix
 	gyro_cov=0.0025
-	acc_cov = 0.25
+	acc_cov = 0.5
 
 	lamda=0.01
-	bw_cov=0.001
-	ba_cov=0.001
+	bw_cov=0.0001
+	ba_cov=0.0001
 
-	gravity_cov=0.005
+	gravity_cov=0.0025
 	current_t=0
 
 	initialized = False
