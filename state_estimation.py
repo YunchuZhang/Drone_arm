@@ -43,7 +43,7 @@ while True:
 		#print bA,bb
 
 	acc_=np.array([acc[1],acc[0],-acc[2]])
-	gyro_=np.array(gyro[1],gyro[0],gyro[2])
+	gyro_=np.array([gyro[1],gyro[0],gyro[2]])
 	#print "acc_: ", acc_
 	t=time.time()
 	ekf.predict(gyro_, acc_, t,bA,bb)
