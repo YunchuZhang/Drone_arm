@@ -70,7 +70,7 @@ class EKF:
 		print ("dt:  ", dt)
 		#dt=0.0001
 
-		self.process(gyro,acc,bA,bb) # get state transition matrix. The input parameters are raw data from sensor
+		self.process(gyro,acc) # get state transition matrix. The input parameters are raw data from sensor
 		#print "x_qian: ", self.x[10:16]
 		self.x[0:4] += self.xdot[0:4]*dt
 		self.x[7:10] += self.xdot[7:10]*dt
