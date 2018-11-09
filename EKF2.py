@@ -23,7 +23,7 @@ class EKF:
 	gyro_cov=0.0025
 	acc_cov = 0.25
 
-	lamda=0.0
+	lamda=0.001
 	bw_cov=0.0000001
 	ba_cov=0.0000001
 
@@ -191,9 +191,6 @@ class EKF:
 	def array2q(self, a):
 		q=np.quaternion(a[0],a[1],a[2],a[3])
 		return q
-
-	def q_vec(self, q):
-		return q_vec
 
 	def angle(self,a):
 		if a<-math.pi*0.5:
