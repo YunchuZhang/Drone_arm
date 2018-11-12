@@ -12,12 +12,12 @@ imu = navio.mpu9250.MPU9250()
 imu2 = navio.lsm9ds1.LSM9DS1()
 imu_count=0
 
-if imu2.testConnection():
+if imu.testConnection():
     print ("Connection established: True")
 else:
 	print ("Connection established: False")
 	
-imu2.initialize()
+imu.initialize()
 ekf = EKF()
 i = 1
 A = np.array([0,0,0])
@@ -26,7 +26,7 @@ bA = np.array([0.0,0.0,0.0])
 bb = np.array([0.0,0.0,0.0])
 while True:
 	
-	m9a, m9g, m9m = imu2.getMotion9()
+	m9a, m9g, m9m = imu.getMotion9()
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
 	acc, gyro, mag = m9a, m9g, m9m
 	#acc2, gyro2 = m9a2, m9g2
