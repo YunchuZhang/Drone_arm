@@ -28,7 +28,7 @@ class EKF:
 	acc_cov = 0.5
 	mag_cov = 0.5
 
-	lamda=0.001
+	lamda=0.0
 	bw_cov=0.0000001
 	ba_cov=0.0000001
 	bm_cov=0.0000001
@@ -194,8 +194,8 @@ class EKF:
 		geo_mag_field_local_var=np.array([0.0,geo_mag_field[0],geo_mag_field[1],geo_mag_field[2]])
 		mag_zhat = mpl.q_p(mpl.q_p(q,geo_mag_field_local_var),self.q_inverse(q))
 		print ("acc_q: ", acc_q)
-		self.zhat[0:3] = acc_q[1:4]+self.x[10:13]/np.linalg.norm(self.x[10:13],ord=2) #acc+ba
-		self.zhat[3:6] = self.x[4:7]+self.x[7:10]#wb+bw
+		self.zhat[0:3] = acc_q[1:4]+self.x[10:13] #acc+ba
+		self.zhat[3:6] = self.x[4:7]+self.x[7:10] #wb+bw
 		#self.zhat[6:9] = mag_zhat[1:4]+self.x[13:16]#mag+bm
 		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
 		self.H[0:3,10:13] = np.eye(3)
