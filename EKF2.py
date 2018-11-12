@@ -79,7 +79,7 @@ class EKF:
 			theta=self.angle(theta)
 			phy1 = phy*180/math.pi
 			theta1 = theta*180/math.pi	
-			rpy = np.array([theta, phy, 0])
+			rpy = np.array([theta, phy, 11.95*math.pi/180])
 			print ("phy theta: ", phy1, theta1)
 			q_init = mpl.euler2quaternion(rpy)# returns quaternion
 			self.x[0] = q_init.w
