@@ -185,7 +185,7 @@ class EKF:
 		g_n_q = np.array([0.0,0.0,0.0,-1.0])
 		acc_q = mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
 		geo_mag_field_local_var=np.array([0.0,geo_mag_field[0],geo_mag_field[1],geo_mag_field[2]])
-		mag_zhat = mpl.q_p(mpl.q_p(q,geo_mag_field),self.q_inverse(q))
+		mag_zhat = mpl.q_p(mpl.q_p(q,geo_mag_field_local_var),self.q_inverse(q))
 		print ("acc_q: ", acc_q)
 		self.zhat[0:3] = acc_q[1:4]+self.x[10:13]#acc+ba
 		self.zhat[3:6] = self.x[4:7]+self.x[7:10]#wb+bw
