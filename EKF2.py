@@ -168,7 +168,7 @@ class EKF:
 		#mag = np.dot(Rotation_mat,mag)
 
 		z=np.zeros(6)
-		z[0:3]=acc/np.linalg.norm(acc,ord=2)
+		z[0:3]=acc#/np.linalg.norm(acc,ord=2)
 		z[3:6]=gyro
 		#z[6:9]=mag
 		self.measurement()
@@ -189,7 +189,7 @@ class EKF:
 		q=np.array([0.0,0.0,0.0,0.0])
 		q=self.x[0:4]
 		#ba=self.x[13:16]
-		g_n_q = np.array([0.0,0.0,0.0,1.0])
+		g_n_q = np.array([0.0,0.0,0.0,9.8])
 		acc_q = mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
 		geo_mag_field_local_var=np.array([0.0,geo_mag_field[0],geo_mag_field[1],geo_mag_field[2]])
 		mag_zhat = mpl.q_p(mpl.q_p(q,geo_mag_field_local_var),self.q_inverse(q))
