@@ -50,7 +50,7 @@ class EKF:
 		self.Q[0:3,0:3] = np.eye(3)*self.gyro_cov
 		self.Q[3:6,3:6] = np.eye(3)*self.bw_cov
 		self.Q[6:9,6:9] = np.eye(3)*self.ba_cov
-		self,Q[9:12,9:12] = np.eye(3)*self.bm_cov
+		self.Q[9:12,9:12] = np.eye(3)*self.bm_cov
 		self.R[0:3,0:3] *= self.gravity_cov
 		self.R[3:6,3:6] *= self.gyro_cov
 		self.R[6:9,6:9] *= self.mag_cov
