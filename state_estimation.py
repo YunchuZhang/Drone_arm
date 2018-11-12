@@ -28,7 +28,7 @@ while True:
 	
 	m9a, m9g, m9m = imu2.getMotion9()
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
-	acc, gyro = m9a, m9g
+	acc, gyro, mag = m9a, m9g, m9m
 	#acc2, gyro2 = m9a2, m9g2
 	#print "acc raw data: ", acc, "|| gyro raw data:", gyro
 	#if i <= 10:
@@ -51,7 +51,7 @@ while True:
 	if imu_count%10==0:
 		ekf.predict(gyro_, acc_, t)
 		print("UPDATE_:")
-		ekf.update(acc_, gyro_,t)
+		ekf.update(acc_, gyro_, mag, t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print ("---------------------------------------------------------------------------------")
 	#i = i + 1
