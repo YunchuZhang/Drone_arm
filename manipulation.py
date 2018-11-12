@@ -54,7 +54,7 @@ class mpl:
 		D = (q0*q0 - (qv*qv).sum())*np.eye(3) + 2*np.dot(qv.transpose(),qv) - 2*q0*self.skew_symetric(qv)
 		return D		
 	def q_p(self,q,r):
-		a=np.array([0,0,0,0])
+		a=np.array([0.0,0.0,0.0,0.0])
 		a[0] = q[0]*r[0]-q[1]*r[1]-q[2]*r[2]-q[3]*r[3]
 		a[1] = r[0]*q[1]+r[1]*q[0]-r[2]*q[3]+r[3]*q[2]
 		a[2] = r[0]*q[2]+r[1]*q[3]+r[2]*q[0]-r[3]*q[1]
