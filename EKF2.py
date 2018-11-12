@@ -59,16 +59,16 @@ class EKF:
 		self.imu_initialized = False
 		self.magnetic_initialized = False
 	def predict(self, gyro, acc, t):#t is the time we read data from sensor
+		print ("gyro before rotation: ", gyro)
+		print ("acc before rotation: ", acc)
+		gyro = np.dot(Rotation_mat,gyro)# transform coordinate to NEU coordinate.
+		acc = np.dot(Rotation_mat,acc)
+		print ("gyro after rotation: ", gyro)
+		print ("acc after rotation: ", acc)
 		if self.imu_initialized == False:
 			self.imu_initialized = True
 			self.initialized = True
-			self.current_t = t
-			print ("gyro before rotation: ", gyro)
-			print ("acc before rotation: ", acc)
-			gyro = np.dot(Rotation_mat,gyro)# transform coordinate to NEU coordinate.
-			acc = np.dot(Rotation_mat,acc)
-			print ("gyro after rotation: ", gyro)
-			print ("acc after rotation: ", acc)
+			self.current_t = t 
 			#phy = math.atan(acc[0],-acc[2])#initial eular angles by using first data from IMU 
 			#theta = math.atan(-acc[1],-acc[2])
 			#phy = math.atan2(acc[0],acc[2])#initial eular angles by using first data from IMU 
