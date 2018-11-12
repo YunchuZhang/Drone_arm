@@ -59,12 +59,12 @@ class EKF:
 		self.imu_initialized = False
 		self.magnetic_initialized = False
 	def predict(self, gyro, acc, t):#t is the time we read data from sensor
-		print ("gyro before rotation: ", gyro)
-		print ("acc before rotation: ", acc)
+		#print ("gyro before rotation: ", gyro)
+		#print ("acc before rotation: ", acc)
 		gyro = np.dot(Rotation_mat,gyro)# transform coordinate to NEU coordinate.
 		acc = np.dot(Rotation_mat,acc)
-		print ("gyro after rotation: ", gyro)
-		print ("acc after rotation: ", acc)
+		#print ("gyro after rotation: ", gyro)
+		#print ("acc after rotation: ", acc)
 		if self.imu_initialized == False:
 			self.imu_initialized = True
 			self.initialized = True
@@ -188,7 +188,7 @@ class EKF:
 		q=np.array([0.0,0.0,0.0,0.0])
 		q=self.x[0:4]
 		#ba=self.x[13:16]
-		g_n_q = np.array([0.0,0.0,0.0,-1.0])
+		g_n_q = np.array([0.0,0.0,0.0,1.0])
 		acc_q = mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
 		geo_mag_field_local_var=np.array([0.0,geo_mag_field[0],geo_mag_field[1],geo_mag_field[2]])
 		mag_zhat = mpl.q_p(mpl.q_p(q,geo_mag_field_local_var),self.q_inverse(q))
