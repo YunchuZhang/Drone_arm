@@ -165,6 +165,7 @@ class EKF:
 		if t < self.current_t: return
 		gyro = np.dot(Rotation_mat,gyro)# transform coordinate to NEU coordinate.
 		acc = np.dot(Rotation_mat,acc)
+		mag = np.dot(Rotation_mat,mag)
 
 		z=np.zeros(9)
 		z[0:3]=acc/np.linalg.norm(acc,ord=2)
