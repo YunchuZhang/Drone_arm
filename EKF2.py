@@ -167,7 +167,7 @@ class EKF:
 		acc = np.dot(Rotation_mat,acc)
 		#mag = np.dot(Rotation_mat,mag)
 
-		z=np.zeros(9)
+		z=np.zeros(6)
 		z[0:3]=acc/np.linalg.norm(acc,ord=2)
 		z[3:6]=gyro
 		#z[6:9]=mag
