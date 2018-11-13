@@ -23,7 +23,7 @@ class EKF:
 	F=np.zeros((19,19))#state transition
 	G=np.zeros((19,12))
 	H=np.zeros((12,19))#observation Matrix
-	R=np.eye(6)#observation noise Matrix gravity_cov gyro_cov mag_cov
+	R=np.eye(12)#observation noise Matrix gravity_cov gyro_cov mag_cov
 	gyro_cov = 0.0025
 	acc_cov = 0.5
 	mag_cov = 0.5
@@ -32,6 +32,8 @@ class EKF:
 	bw_cov=0.0000001
 	ba_cov=0.0000001
 	bm_cov=0.0000001
+	pos_cov=0.01
+	vel_cov=0.01
 
 	gravity_cov=0.0025
 	current_t=0
@@ -54,6 +56,8 @@ class EKF:
 		#self.Q[9:12,9:12] = np.eye(3)*self.bm_cov
 		self.R[0:3,0:3] *= self.gravity_cov
 		self.R[3:6,3:6] *= self.gyro_cov
+		self.R[6:9,6:9] *= self.pos_cov
+		self.R[9:12,9:12] *= self.vel_cov
 		#self.R[6:9,6:9] *= self.mag_cov
 
 		self.initialized = False
