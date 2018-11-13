@@ -200,8 +200,8 @@ class EKF:
 		z=np.zeros(12)
 		z[0:3]=acc/np.linalg.norm(acc,ord=2)
 		z[3:6]=gyro
-		z[6:9]=np.zeros(3)+np.array([random.gauss(0,0.01),random.gauss(0,0.01),random.gauss(0,0.01)])
-		z[9:12]=np.zeros(3)+np.array([random.gauss(0,0.01),random.gauss(0,0.01),random.gauss(0,0.01)])
+		z[6:9]=np.zeros(3)#+np.array([random.gauss(0,0.01),random.gauss(0,0.01),random.gauss(0,0.01)])
+		z[9:12]=np.zeros(3)#+np.array([random.gauss(0,0.01),random.gauss(0,0.01),random.gauss(0,0.01)])
 		#z[6:9]=mag
 		self.measurement()
 		#print "self.H: ", self.H
