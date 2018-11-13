@@ -49,10 +49,10 @@ while True:
 	ekf.predict(gyro_, acc_, t)
 	imu_count+=1
 	if imu_count%10==0:
-		ekf.predict(gyro_, acc_, t)
+		#ekf.predict(gyro_, acc_, t)
 		print("UPDATE_:")
 		ekf.update(acc_, gyro_, mag, t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print ("---------------------------------------------------------------------------------")
 	#i = i + 1
-	time.sleep(0.2)
+	#time.sleep(0.2)
