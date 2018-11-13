@@ -102,6 +102,8 @@ class EKF:
 		self.x[0:4] += self.xdot[0:4]*dt
 		self.x[7:10] += self.xdot[7:10]*dt
 		self.x[10:13] += self.xdot[10:13]*dt
+		self.x[13:16] += self.xdot[13:16]*dt
+		self.x[16:19] += self.xdot[16:19]*dt
 		#self.x[13:16] += self.xdot[13:16]*dt
 		#print "x_hou: ", self.x[10:16]
 		self.F[0:4,0:4]=np.eye(4)+self.F[0:4,0:4]*dt
