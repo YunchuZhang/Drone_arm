@@ -106,14 +106,14 @@ class EKF:
 		self.x[16:19] += self.xdot[16:19]*dt
 		#self.x[13:16] += self.xdot[13:16]*dt
 		#print "x_hou: ", self.x[10:16]
-		self.F[0:4,0:4]=np.eye(4)+self.F[0:4,0:4]*dt
-		self.F[7:10,7:10]=np.eye(3)+self.F[7:10,7:10]*dt
-		self.F[10:13,10:13]=np.eye(3)+self.F[10:13,10:13]*dt
+		self.F[0:4,0:4] = np.eye(4)+self.F[0:4,0:4]*dt
+		self.F[7:10,7:10] = np.eye(3)+self.F[7:10,7:10]*dt
+		self.F[10:13,10:13] = np.eye(3)+self.F[10:13,10:13]*dt
 		self.F[13:16,13:16] = np.eye(3)
-		self.F[13:16, 16:19] *= dt
+		self.F[13:16, 16:19] *= dt#p=p+vdt
 		self.F[16:19,16:19] = np.eye(3)
-		self.F[16:19,0:4] *= dt
-		self.F[16:19, 10:13] *= dt
+		self.F[16:19,0:4] *= dt#v=v+q*(acc-ba)qdt
+		self.F[16:19, 10:13] *= -dt
 		#self.F[13:16,13:16]=np.eye(3)+self.F[13:16,13:16]*dt
 		#self.G=self.G*dt
 		self.G[16:19, 9:12] *= dt
