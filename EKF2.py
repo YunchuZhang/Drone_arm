@@ -32,8 +32,8 @@ class EKF:
 	bw_cov=0.0000001
 	ba_cov=0.0000001
 	bm_cov=0.0000001
-	pos_cov=0.01
-	vel_cov=0.01
+	pos_cov=0.0001
+	vel_cov=0.0001
 
 	gravity_cov=0.0025
 	current_t=0
@@ -200,8 +200,8 @@ class EKF:
 		z=np.zeros(12)
 		z[0:3]=acc/np.linalg.norm(acc,ord=2)
 		z[3:6]=gyro
-		z[6:9]=np.zeros(3)+np.array([random.gauss(0,0.1),random.gauss(0,0.1),random.gauss(0,0.1)])
-		z[9:12]=np.zeros(3)+np.array([random.gauss(0,0.1),random.gauss(0,0.1),random.gauss(0,0.1)])
+		z[6:9]=np.zeros(3)+np.array([random.gauss(0,0.01),random.gauss(0,0.01),random.gauss(0,0.01)])
+		z[9:12]=np.zeros(3)+np.array([random.gauss(0,0.01),random.gauss(0,0.01),random.gauss(0,0.01)])
 		#z[6:9]=mag
 		self.measurement()
 		#print "self.H: ", self.H
