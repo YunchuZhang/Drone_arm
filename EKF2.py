@@ -67,8 +67,8 @@ class EKF:
 	def predict(self, gyro, acc, t):#t is the time we read data from sensor
 		#print ("gyro before rotation: ", gyro)
 		#print ("acc before rotation: ", acc)
-		gyro = np.dot(Rotation_mat,gyro)# transform coordinate to NEU coordinate.
-		acc = np.dot(Rotation_mat,acc)
+		#gyro = np.dot(Rotation_mat,gyro)# transform coordinate to NEU coordinate.
+		#acc = np.dot(Rotation_mat,acc)
 		#print ("gyro after rotation: ", gyro)
 		#print ("acc after rotation: ", acc)
 		if self.imu_initialized == False:
@@ -195,8 +195,8 @@ class EKF:
 			self.initialized = True
 			self.current_t = t
 		if t < self.current_t: return
-		gyro = np.dot(Rotation_mat,gyro)# transform coordinate to NEU coordinate.
-		acc = np.dot(Rotation_mat,acc)
+		#gyro = np.dot(Rotation_mat,gyro)# transform coordinate to NEU coordinate.
+		#acc = np.dot(Rotation_mat,acc)
 		#mag = np.dot(Rotation_mat,mag)
 
 		z=np.zeros(12)
