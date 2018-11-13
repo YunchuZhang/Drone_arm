@@ -161,8 +161,10 @@ class EKF:
 
 		acc_b = np.zeros(4)
 		acc_b[1:4] = acc - ba
+		print ("acc_b: ", acc_b[1:4])
 		acc_n = mpl.q_p(mpl.q_p(self.q_inverse(q),acc_b),q)
 		self.xdot[16:19] = acc_n[1:4] + GRAVITY
+		print ("acc_n+GRAVITY: ", self.xdot[16:19])
 
 
 		#self.xdot[13:16] = -self.lamda*self.x[13:16]
