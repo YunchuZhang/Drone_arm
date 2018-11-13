@@ -77,10 +77,10 @@ class EKF:
 			self.current_t = t 
 			#phy = math.atan(acc[0],-acc[2])#initial eular angles by using first data from IMU 
 			#theta = math.atan(-acc[1],-acc[2])
-			#phy = math.atan2(acc[0],acc[2])#initial eular angles by using first data from IMU 
-			#theta = math.atan2(acc[1],acc[2])
-			phy = math.atan2(acc[1],acc[2])#initial eular angles by using first data from IMU 
-			theta = math.atan2(acc[0],acc[2])
+			phy = math.atan2(acc[0],acc[2])#initial eular angles by using first data from IMU without rotation
+			theta = math.atan2(acc[1],acc[2])
+			#phy = math.atan2(acc[1],acc[2])#initial eular angles by using first data from IMU with rotation
+			#theta = math.atan2(acc[0],acc[2])
 			phy=self.angle(phy)
 			theta=self.angle(theta)
 			phy1 = phy*180/math.pi
