@@ -29,8 +29,8 @@ class EKF:
 	mag_cov = 0.5
 
 	lamda=0.0
-	bw_cov=0.0000001
-	ba_cov=0.0000001
+	bw_cov=0.000000
+	ba_cov=0.000000
 	bm_cov=0.0000001
 	pos_cov=0.0001
 	vel_cov=0.0001
