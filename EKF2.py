@@ -9,20 +9,20 @@ from manipulation2 import *
 GRAVITY=np.array([0,0,-9.8])
 geo_mag_field=np.array([24.1774,0,39.9646])#[Mx,0,Mz] the coordinate is x pointing forward and y is pointing right with z pointing down.
 #the unit of geo magnetic field is mT. 
-Rotation_mat=np.dot(np.array([[0,-1,0],[1,0,0],[0,0,1]]),np.array([[1,0,0],[0,-1,0],[0,0,-1]]))
+Rotation_mat=np.dot(np.array([[0,-1.0,0],[1.0,0,0],[0,0,1.0]]),np.array([[1.0,0,0],[0,-1.0,0],[0,0,-1.0]]))
 
 mpl = mpl()
 
 class EKF:
-	x=np.zeros(13)#16 states q omegas bw ba bm
-	xdot=np.zeros(13)#10 states derivaties
+	x=np.zeros(19)#16 states q(4) omegas(3) p(3) v(3) bw(3) ba(3)
+	xdot=np.zeros(19)#10 states derivaties
 	z=np.zeros(6)#real raw data from sensor 9dof acc gyro mag
 	zhat=np.zeros(6)#H*x_bar
-	P=np.eye(13)#covariance matrix
-	Q=np.zeros([9,9])#process noise covariance gyro_cov bw_cov ba_cov bm_cov
-	F=np.zeros((13,13))#state transition
-	G=np.zeros((13,9))
-	H=np.zeros((6,13))#observation Matrix
+	P=np.eye(19)#covariance matrix
+	Q=np.zeros([12,12])#process noise covariance gyro_cov bw_cov ba_cov bm_cov
+	F=np.zeros((19,19))#state transition
+	G=np.zeros((19,12))
+	H=np.zeros((6,19))#observation Matrix
 	R=np.eye(6)#observation noise Matrix gravity_cov gyro_cov mag_cov
 	gyro_cov = 0.0025
 	acc_cov = 0.5
@@ -50,6 +50,7 @@ class EKF:
 		self.Q[0:3,0:3] = np.eye(3)*self.gyro_cov
 		self.Q[3:6,3:6] = np.eye(3)*self.bw_cov
 		self.Q[6:9,6:9] = np.eye(3)*self.ba_cov
+		self.Q[9:12,9:12] = np.eye(3)*self.gravity_cov
 		#self.Q[9:12,9:12] = np.eye(3)*self.bm_cov
 		self.R[0:3,0:3] *= self.gravity_cov
 		self.R[3:6,3:6] *= self.gyro_cov
@@ -58,6 +59,7 @@ class EKF:
 		self.initialized = False
 		self.imu_initialized = False
 		self.magnetic_initialized = False
+
 	def predict(self, gyro, acc, t):#t is the time we read data from sensor
 		#print ("gyro before rotation: ", gyro)
 		#print ("acc before rotation: ", acc)
@@ -101,8 +103,14 @@ class EKF:
 		self.F[0:4,0:4]=np.eye(4)+self.F[0:4,0:4]*dt
 		self.F[7:10,7:10]=np.eye(3)+self.F[7:10,7:10]*dt
 		self.F[10:13,10:13]=np.eye(3)+self.F[10:13,10:13]*dt
+		self.F[13:16,13:16] = np.eye(3)
+		self.F[13:16, 16:19] *= dt
+		self.F[16:19,16:19] = np.eye(3)
+		self.F[16:19,0:4] *= dt
+		self.F[16:19, 10:13] *= dt
 		#self.F[13:16,13:16]=np.eye(3)+self.F[13:16,13:16]*dt
 		#self.G=self.G*dt
+		self.G[16:19, 9:12] *= dt
 		self.P=np.dot(np.dot(self.F,self.P),self.F.transpose())+\
 		np.dot(np.dot(self.G,self.Q),self.G.transpose())
 
@@ -122,12 +130,16 @@ class EKF:
 		omega=self.x[4:7]
 		bw=self.x[7:10]#what is the initail value of bias?! maybe we could use the first 3 seconds average value# when the drone is static as init bias
 		ba=self.x[10:13]
+		p=self.x[13:16]
+		v=self.x[16:19]
 		#bm=self.x[13:16]
 		q=self.x[0:4]
 		print ("quaternion: ", self.x[0:4])
 		print ("omega: ", self.x[4:7])
 		print ("biasw: ", self.x[7:10])
 		print ("biasa: ", self.x[10:13])
+		print ("position: ", self.x[13:16])
+		print ("velocity: ", self.x[16:19])
 		#print ("biasm: ", self.x[13:16])
 
 		gyro_q = np.array([0.0,0.0,0.0,0.0])
@@ -141,6 +153,14 @@ class EKF:
 	
 		self.xdot[7:10] = -self.lamda*self.x[7:10]
 		self.xdot[10:13] = -self.lamda*self.x[10:13]
+		self.xdot[13:16] = v
+
+		acc_b = np.zeros(4)
+		acc_b[1:4] = acc - ba
+		acc_n = mpl.q_p(mpl.q_p(self.q_inverse(q),acc_b),q)
+		self.xdot[16:19] = acc_n + GRAVITY
+
+
 		#self.xdot[13:16] = -self.lamda*self.x[13:16]
 
 		self.F[0:4,0:4] = 0.5*mpl.diff_pq_p(gyro_q)
@@ -148,13 +168,17 @@ class EKF:
 		self.F[4:7,7:10] = -np.eye(3)
 		self.F[7:10,7:10] = self.lamda*np.eye(3)
 		self.F[10:13,10:13] = self.lamda*np.eye(3)
+		self.F[13:16, 16:19] = np.eye(3)
+		self.F[16:19, 0:4] = mpl.diff_qstarvq_q(q, acc_b[1:4])# or acc[1:4]
+		self.F[16:19, 10:13] = -mpl.diff_qstarvq_v(q)
 		#self.F[13:16,13:16] = self.lamda*np.eye(3)
 
 		#self.G[0:4,0:3] = -0.5*mpl.diff_pq_q(q)[0:4,1:4]
 		#self.G[4:7,3:6] = np.eye(3)
-		self.G[4:7,0:3] = np.eye(3)
-		self.G[7:10,3:6] = np.eye(3)
-		self.G[10:13,6:9] = np.eye(3)
+		self.G[4:7,0:3] = np.eye(3)#noise of angular velocity
+		self.G[7:10,3:6] = np.eye(3)#noise of bias omega
+		self.G[10:13,6:9] = np.eye(3)#noise of bias acc
+		self.G[16:19, 9:12] = mpl.diff_qstarvq_v(q)
 		#self.G[13:16,9:12] = np.eye(3)
 
 
@@ -179,7 +203,7 @@ class EKF:
 		#print "self.K: ",self.K
 		self.x += np.dot(self.K,(z-self.zhat))
 		print ("z-zhat: ", z-self.zhat)
-		I=np.eye(13)
+		I=np.eye(19)
 		print ("P qian: ", np.diag(np.mat(self.P)))
 		self.P = np.dot((I - np.dot(self.K, self.H)), self.P)
 		print ("P hou: ", np.diag(np.mat(self.P)))
@@ -191,8 +215,8 @@ class EKF:
 		#ba=self.x[13:16]
 		g_n_q = np.array([0.0,0.0,0.0,1.0])
 		acc_q = mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
-		geo_mag_field_local_var=np.array([0.0,geo_mag_field[0],geo_mag_field[1],geo_mag_field[2]])
-		mag_zhat = mpl.q_p(mpl.q_p(q,geo_mag_field_local_var),self.q_inverse(q))
+		#geo_mag_field_local_var=np.array([0.0,geo_mag_field[0],geo_mag_field[1],geo_mag_field[2]])
+		#mag_zhat = mpl.q_p(mpl.q_p(q,geo_mag_field_local_var),self.q_inverse(q))
 		print ("acc_q: ", acc_q)
 		self.zhat[0:3] = acc_q[1:4]+self.x[10:13] #acc+ba
 		self.zhat[3:6] = self.x[4:7]+self.x[7:10] #wb+bw
@@ -201,6 +225,9 @@ class EKF:
 		self.H[0:3,10:13] = np.eye(3)
 		self.H[3:6,4:7] = np.eye(3)
 		self.H[3:6,7:10] = np.eye(3)
+		#self.H[6:9, 13:16] = np.eye(3)
+		#self.H[9:12, 16:19] = np.eye(3)
+
 		#self.H[6:9,0:4] = mpl.diff_qvqstar_q(q,geo_mag_field)
 		#self.H[6:9,13:16] = np.eye(3)
 
