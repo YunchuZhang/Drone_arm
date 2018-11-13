@@ -16,13 +16,13 @@ mpl = mpl()
 class EKF:
 	x=np.zeros(19)#16 states q(4) omegas(3) p(3) v(3) bw(3) ba(3)
 	xdot=np.zeros(19)#10 states derivaties
-	z=np.zeros(6)#real raw data from sensor 9dof acc gyro mag
-	zhat=np.zeros(6)#H*x_bar
+	z=np.zeros(12)#real raw data from sensor 9dof acc gyro mag
+	zhat=np.zeros(12)#H*x_bar
 	P=np.eye(19)#covariance matrix
 	Q=np.zeros([12,12])#process noise covariance gyro_cov bw_cov ba_cov bm_cov
 	F=np.zeros((19,19))#state transition
 	G=np.zeros((19,12))
-	H=np.zeros((6,19))#observation Matrix
+	H=np.zeros((12,19))#observation Matrix
 	R=np.eye(6)#observation noise Matrix gravity_cov gyro_cov mag_cov
 	gyro_cov = 0.0025
 	acc_cov = 0.5
@@ -194,6 +194,8 @@ class EKF:
 		z=np.zeros(6)
 		z[0:3]=acc/np.linalg.norm(acc,ord=2)
 		z[3:6]=gyro
+		z[6:9]=np.zeros(3)+random.gauss(0,0.1)
+		z[9:12]=np.zeros(3)+random.gauss(0,0.1)
 		#z[6:9]=mag
 		self.measurement()
 		#print "self.H: ", self.H
@@ -220,13 +222,15 @@ class EKF:
 		print ("acc_q: ", acc_q)
 		self.zhat[0:3] = acc_q[1:4]+self.x[10:13] #acc+ba
 		self.zhat[3:6] = self.x[4:7]+self.x[7:10] #wb+bw
+		self.zhat[6:9] = self.x[13:16]
+		self.zhat[9:12] = self.x[16:19]
 		#self.zhat[6:9] = mag_zhat[1:4]+self.x[13:16]#mag+bm
 		self.H[0:3,0:4] = mpl.diff_qvqstar_q(q, GRAVITY)
 		self.H[0:3,10:13] = np.eye(3)
 		self.H[3:6,4:7] = np.eye(3)
 		self.H[3:6,7:10] = np.eye(3)
-		#self.H[6:9, 13:16] = np.eye(3)
-		#self.H[9:12, 16:19] = np.eye(3)
+		self.H[6:9, 13:16] = np.eye(3)
+		self.H[9:12, 16:19] = np.eye(3)
 
 		#self.H[6:9,0:4] = mpl.diff_qvqstar_q(q,geo_mag_field)
 		#self.H[6:9,13:16] = np.eye(3)
