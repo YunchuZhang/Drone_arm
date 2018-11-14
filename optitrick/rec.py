@@ -11,7 +11,7 @@ import numpy as np
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import PoseStamped
 import zmq
-
+state = np.array([0.0,0.0,0.0,0,0,0,0])
 def callback(data):
 	
 	state[0] = data.pose.position.x
@@ -27,7 +27,7 @@ def callback(data):
 def receive():
 	rospy.init_node('send_display', anonymous=True)
 	# make a video_object and init the video object
-	global state = np.array([0.0,0,0,0,0,0,0])
+	
 
 	rospy.Subscriber('vrpn_client_node/armdrone/pose', PoseStamped, callback)
 	rospy.spin()
