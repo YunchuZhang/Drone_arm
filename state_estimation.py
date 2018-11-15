@@ -53,7 +53,7 @@ savepose.appendleft(savet)
 savepose.appendleft(savet)
 elapsed = 1.0
 while True:
-	print("org"elapsed)
+	print("org",elapsed)
 	print("before",savepose)
 	start = time.clock()
 
