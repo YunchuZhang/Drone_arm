@@ -32,8 +32,8 @@ class EKF:
 	bw_cov=0.0000001
 	ba_cov=0.0000001
 	bm_cov=0.0000001
-	pos_cov=0.0001
-	vel_cov=0.0001
+	pos_cov=0.0000001
+	vel_cov=0.0000001
 
 	gravity_cov=0.0025
 	current_t=0
