@@ -79,9 +79,8 @@ while True:
 	if imu_count%10==0:
 		#ekf.predict(gyro_, acc_, t)
 		print("UPDATE_:")
-		ekf.update(acc_, gyro_, mag, t)
+		ekf.update(acc_, gyro_, position, t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
-	print ("---------------------------------------------------------------------------------")
 	#time.sleep(0.2)
 	elapsed = (time.clock() - start)
 	print("time",elapsed)
@@ -90,6 +89,7 @@ while True:
 	vz = (savepose[0][2] - savepose[-1][2])/elapsed*1.0
 	vel = (vx,vy,vz)
 	print("speed",vel)# currently in optitrack coordinates
+	print ("---------------------------------------------------------------------------------")
 
 
 	
