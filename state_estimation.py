@@ -18,12 +18,12 @@ socket_sub.connect("tcp://192.168.1.9:%d" %sub_port)
 #socket_sub.setsockopt(zmq.SUBSCRIBE, b"")
 socket_sub.setsockopt(zmq.SUBSCRIBE,b'')
 def recv_array(socket, flags=0, copy=True, track=False):
-    """recv a numpy array"""
-    md = socket.recv_json(flags=flags)
-    msg = socket.recv(flags=flags, copy=copy, track=track)
-    buf = buffer(msg)
-    A = np.frombuffer(buf, dtype=md['dtype'])
-    return A.reshape(md['shape'])
+	"""recv a numpy array"""
+	md = socket.recv_json(flags=flags)
+	msg = socket.recv(flags=flags, copy=copy, track=track)
+	buf = buffer(msg)
+	A = np.frombuffer(buf, dtype=md['dtype'])
+	return A.reshape(md['shape'])
 
 
 
@@ -34,7 +34,7 @@ imu2 = navio.lsm9ds1.LSM9DS1()
 imu_count=0
 
 if imu.testConnection():
-    print ("Connection established: True")
+	print ("Connection established: True")
 else:
 	print ("Connection established: False")
 	
@@ -47,11 +47,11 @@ bA = np.array([0.0,0.0,0.0])
 bb = np.array([0.0,0.0,0.0])
 while True:
 	start = time.clock()
-    print('asds')
-    contents  =  recv_array(socket_sub,copy=False)
-    print(contents)
-    elapsed = (time.clock() - start)
-    print("time",elapsed) 
+	print('asds')
+	contents  =  recv_array(socket_sub,copy=False)
+	print(contents)
+	elapsed = (time.clock() - start)
+	print("time",elapsed) 
 	m9a, m9g, m9m = imu.getMotion9()
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
 	acc, gyro, mag = m9a, m9g, m9m
