@@ -100,6 +100,7 @@ while True:
 	print ("---------------------------------------------------------------------------------")
 	print(savepose[-1][0])
 	print(savepose[0][0])
+	print((savepose[-1][0] - savepose[0][0])/elapsed)
 	vx = (savepose[-1][0] - savepose[0][0])/elapsed*1.0
 	vy = (savepose[-1][1] - savepose[0][0])/elapsed*1.0
 	vz = (savepose[-1][2] - savepose[0][0])/elapsed*1.0
