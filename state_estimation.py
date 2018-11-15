@@ -5,7 +5,7 @@ import sys
 import navio.mpu9250
 import navio.util
 from  EKF2 import *
-
+from collections import deque
 import zmq
 import json
 import numpy as np
