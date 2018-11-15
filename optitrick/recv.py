@@ -7,7 +7,7 @@ context = zmq.Context()
 #connect to socket we subscrib
 socket_sub = context.socket(zmq.SUB)
 #socket_sub.connect("tcp://localhost:5556")
-socket_sub.connect("tcp://192.168.1.9:5566")
+socket_sub.connect("tcp://192.168.1.9:%d" %sub_port)
 #socket_sub.setsockopt(zmq.SUBSCRIBE, b"")
 socket_sub.setsockopt(zmq.SUBSCRIBE,b'')
 def recv_array(socket, flags=0, copy=True, track=False):
