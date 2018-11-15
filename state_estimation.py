@@ -57,9 +57,10 @@ while True:
 
 	print('asds')
 	contents  =  recv_array(socket_sub,copy=False)
+	position = contents[0:3]
 	
 	Rotation_mat=np.dot(np.array([[0,0,1],[0,1,0],[-1,0,0]]),np.array([[0,1,0],[-1,0,0],[0,0,1.0]]))
-	contents[0:3] = np.dot(Rotation_mat, contents[0:3])
+	contents[0:3] = np.dot(Rotation_mat, position)
 
 	savet = (contents[0],contents[1],contents[2])
 	savepose.appendleft(savet)
