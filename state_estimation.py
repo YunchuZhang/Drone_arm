@@ -58,6 +58,9 @@ while True:
 	print('asds')
 	contents  =  recv_array(socket_sub,copy=False)
 	
+	Rotation_mat=np.dot(np.array([[0,0,1],[0,1,0],[-1,0,0]]),np.array([[0,1,0],[-1,0,0],[0,0,1.0]]))
+	contents[0:3] = np.dot(Rotation_mat, contents[0:3]
+
 	savet = (contents[0],contents[1],contents[2])
 	savepose.appendleft(savet)
 	print(contents)
@@ -71,7 +74,7 @@ while True:
 	#print "acc_: ", acc_
 	t=time.time()
 	ekf.predict(gyro_, acc_, t)
-	imu_count+=1
+	imu_count += 1
 	if imu_count%10==0:
 		#ekf.predict(gyro_, acc_, t)
 		print("UPDATE_:")
