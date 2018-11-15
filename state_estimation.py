@@ -65,18 +65,7 @@ while True:
 	m9a, m9g, m9m = imu.getMotion9()
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
 	acc, gyro, mag = m9a, m9g, m9m
-	#acc2, gyro2 = m9a2, m9g2
-	#print "acc raw data: ", acc, "|| gyro raw data:", gyro
-	#if i <= 10:
-		#A = A + acc
-		#B = B + gyro
 
-	#else : 
-		#if i ==11:
-			#bA = A/10.0
-			#bb = B/10.0
-			#bA = bA -[0,0,9.8]
-		#print bA,bb
 	acc_=np.array([-acc[0],-acc[1],-acc[2]])
 	gyro_=np.array([gyro[0],gyro[1],gyro[2]])
 	#print "acc_: ", acc_
@@ -89,7 +78,6 @@ while True:
 		ekf.update(acc_, gyro_, mag, t)
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	print ("---------------------------------------------------------------------------------")
-	#i = i + 1
 	#time.sleep(0.2)
 	elapsed = (time.clock() - start)
 	print("time",elapsed)
@@ -97,7 +85,7 @@ while True:
 	vy = (savepose[0][1] - savepose[-1][1])/elapsed*1.0
 	vz = (savepose[0][2] - savepose[-1][2])/elapsed*1.0
 	vel = (vx,vy,vz)
-	print("speed",vel)
+	print("speed",vel)# currently in optitrack coordinates
 
 
 	
