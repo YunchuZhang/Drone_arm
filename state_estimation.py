@@ -53,8 +53,6 @@ savepose.appendleft(savet)
 savepose.appendleft(savet)
 elapsed = 1.0
 while True:
-	print("org",elapsed)
-	print("before",savepose)
 	start = time.clock()
 
 	print('asds')
@@ -95,15 +93,9 @@ while True:
 	#time.sleep(0.2)
 	elapsed = (time.clock() - start)
 	print("time",elapsed)
-	print ("---------------------------------------------------------------------------------")
-	print("after",savepose)
-	print ("---------------------------------------------------------------------------------")
-	print(savepose[-1][0])
-	print(savepose[0][0])
-	print((savepose[-1][0] - savepose[0][0])/elapsed)
 	vx = (savepose[-1][0] - savepose[0][0])/elapsed*1.0
-	vy = (savepose[-1][1] - savepose[0][0])/elapsed*1.0
-	vz = (savepose[-1][2] - savepose[0][0])/elapsed*1.0
+	vy = (savepose[-1][1] - savepose[0][1])/elapsed*1.0
+	vz = (savepose[-1][2] - savepose[0][2])/elapsed*1.0
 	vel = (vx,vy,vz)
 	print("speed",vel)
 
