@@ -93,9 +93,9 @@ while True:
 	#time.sleep(0.2)
 	elapsed = (time.clock() - start)
 	print("time",elapsed)
-	vx = (savepose[-1][0] - savepose[0][0])/elapsed*1.0
-	vy = (savepose[-1][1] - savepose[0][1])/elapsed*1.0
-	vz = (savepose[-1][2] - savepose[0][2])/elapsed*1.0
+	vx = (savepose[0][0] - savepose[-1][0])/elapsed*1.0
+	vy = (savepose[0][1] - savepose[-1][1])/elapsed*1.0
+	vz = (savepose[0][2] - savepose[-1][2])/elapsed*1.0
 	vel = (vx,vy,vz)
 	print("speed",vel)
 
