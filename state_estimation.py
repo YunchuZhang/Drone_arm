@@ -9,6 +9,9 @@ from collections import deque
 import zmq
 import json
 import numpy as np
+savet = (0.0,0.0,0.0)
+savepose = deque(maxlen=2)
+
 sub_port = 5556
 context = zmq.Context()
 #connect to socket we subscrib
@@ -45,13 +48,20 @@ A = np.array([0,0,0])
 B = np.array([0,0,0])
 bA = np.array([0.0,0.0,0.0])
 bb = np.array([0.0,0.0,0.0])
+
+savepose.appendleft(savet)
+savepose.appendleft(savet)
+elapsed = 1.0
 while True:
 	start = time.clock()
+
 	print('asds')
 	contents  =  recv_array(socket_sub,copy=False)
+	
+	savet = (contents[0],contents[1],contents[2])
+	savepose.appendleft(savet)
 	print(contents)
-	elapsed = (time.clock() - start)
-	print("time",elapsed) 
+		
 	m9a, m9g, m9m = imu.getMotion9()
 	#m9a2,m9g2,m9m2 = imu2.getMotion9()
 	acc, gyro, mag = m9a, m9g, m9m
@@ -81,3 +91,14 @@ while True:
 	print ("---------------------------------------------------------------------------------")
 	#i = i + 1
 	#time.sleep(0.2)
+	elapsed = (time.clock() - start)
+	print("time",elapsed)
+	vx = (savepose[-1][0] - savepose[0][0])/elapsed*1.0
+	vy = (savepose[-1][1] - savepose[0][0])/elapsed*1.0
+	vz = (savepose[-1][2] - savepose[0][0])/elapsed*1.0
+	vel = (vx,vy,vz)
+	print("speed",vel)
+
+
+	
+	 
