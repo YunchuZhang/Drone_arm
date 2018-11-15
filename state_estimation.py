@@ -53,6 +53,7 @@ savepose.appendleft(savet)
 savepose.appendleft(savet)
 elapsed = 1.0
 while True:
+	print("org"elapsed)
 	print("before",savepose)
 	start = time.clock()
 
@@ -96,6 +97,9 @@ while True:
 	print("time",elapsed)
 	print ("---------------------------------------------------------------------------------")
 	print("after",savepose)
+	print ("---------------------------------------------------------------------------------")
+	print(savepose[-1][0])
+	print(savepose[0][0])
 	vx = (savepose[-1][0] - savepose[0][0])/elapsed*1.0
 	vy = (savepose[-1][1] - savepose[0][0])/elapsed*1.0
 	vz = (savepose[-1][2] - savepose[0][0])/elapsed*1.0
