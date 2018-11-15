@@ -77,10 +77,13 @@ while True:
 	t=time.time()
 	ekf.predict(gyro_, acc_, t)
 	imu_count += 1
+	ekf.update(acc_, gyro_, position, vel, t)
+	'''
 	if imu_count%10==0:
 		#ekf.predict(gyro_, acc_, t)
 		print("UPDATE_:")
 		ekf.update(acc_, gyro_, position, vel, t)
+	'''
 	#print("position: ", ekf.x[4:7], "velocity", ekf.x[7:10])
 	#time.sleep(0.2)
 	elapsed = (time.clock() - start)
