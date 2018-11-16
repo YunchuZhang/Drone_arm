@@ -99,21 +99,21 @@ class EKF:
 
 		self.process(gyro,acc) # get state transition matrix. The input parameters are raw data from sensor
 		#print "x_qian: ", self.x[10:16]
-		self.x[0:4] += self.xdot[0:4]*dt
-		self.x[7:10] += self.xdot[7:10]*dt
-		self.x[10:13] += self.xdot[10:13]*dt
-		self.x[13:16] += self.xdot[13:16]*dt
-		self.x[16:19] += self.xdot[16:19]*dt
+		self.x[0:4] += self.xdot[0:4]*dt  # q = q+q_dot*dt
+		self.x[7:10] += self.xdot[7:10]*dt # bias_gyro = bias_gyro + dt
+		self.x[10:13] += self.xdot[10:13]*dt # bias_acc
+		self.x[13:16] += self.xdot[13:16]*dt # position 
+		self.x[16:19] += self.xdot[16:19]*dt # velocity
 		#self.x[13:16] += self.xdot[13:16]*dt
 		#print "x_hou: ", self.x[10:16]
 		self.F[0:4,0:4] = np.eye(4)+self.F[0:4,0:4]*dt
-		self.F[7:10,7:10] = np.eye(3)+self.F[7:10,7:10]*dt
-		self.F[10:13,10:13] = np.eye(3)+self.F[10:13,10:13]*dt
-		self.F[13:16,13:16] = np.eye(3)
+		self.F[7:10,7:10] = np.eye(3)+self.F[7:10,7:10]*dt# bias_gyro
+		self.F[10:13,10:13] = np.eye(3)+self.F[10:13,10:13]*dt# bias_a = bias_a +dt
+		self.F[13:16,13:16] = np.eye(3) # p_k+1 = p_k + v*dt
 		self.F[13:16, 16:19] *= dt#p=p+vdt
 		self.F[16:19,16:19] = np.eye(3)
-		self.F[16:19,0:4] *= dt#v=v+q*(acc-ba)qdt
-		self.F[16:19, 10:13] *= -dt
+		self.F[16:19,0:4] *= dt#v=v+q*(acc-ba-w)qdt
+		#self.F[16:19, 10:13] *= -dt
 		#self.F[13:16,13:16]=np.eye(3)+self.F[13:16,13:16]*dt
 		#self.G=self.G*dt
 		self.G[16:19, 9:12] *= dt
@@ -177,8 +177,8 @@ class EKF:
 		self.F[7:10,7:10] = self.lamda*np.eye(3)
 		self.F[10:13,10:13] = self.lamda*np.eye(3)
 		self.F[13:16, 16:19] = np.eye(3)
-		self.F[16:19, 0:4] = mpl.diff_qstarvq_q(q, acc)# or acc[1:4]
-		self.F[16:19, 10:13] = -mpl.diff_qstarvq_v(q)
+		self.F[16:19, 0:4] = mpl.diff_qstarvq_q(q, acc_b[1:4])# or acc[1:4]
+		#self.F[16:19, 10:13] = -mpl.diff_qstarvq_v(q)
 		#self.F[13:16,13:16] = self.lamda*np.eye(3)
 
 		#self.G[0:4,0:3] = -0.5*mpl.diff_pq_q(q)[0:4,1:4]
@@ -186,7 +186,7 @@ class EKF:
 		self.G[4:7,0:3] = np.eye(3)#noise of angular velocity
 		self.G[7:10,3:6] = np.eye(3)#noise of bias omega
 		self.G[10:13,6:9] = np.eye(3)#noise of bias acc
-		self.G[16:19, 9:12] = -mpl.diff_qstarvq_v(q)
+		self.G[16:19, 9:12] = -mpl.diff_qstarvq_v(q)# noise of acceleration
 		#self.G[13:16,9:12] = np.eye(3)
 
 
