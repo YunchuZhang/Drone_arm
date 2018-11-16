@@ -164,7 +164,7 @@ class EKF:
 		acc_b = np.zeros(4)
 		acc_b[1:4] = acc - ba
 		print ("acc_b: ", acc_b[1:4])
-		acc_n = mpl.q_p(mpl.q_p(self.q_inverse(q),acc_b),q)
+		acc_n = mpl.q_p(mpl.q_p(q,acc_b),self.q_inverse(q))
 		self.xdot[16:19] = acc_n[1:4] + GRAVITY
 		print ("acc_n+GRAVITY: ", self.xdot[16:19])
 
@@ -177,7 +177,7 @@ class EKF:
 		self.F[7:10,7:10] = self.lamda*np.eye(3)
 		self.F[10:13,10:13] = self.lamda*np.eye(3)
 		self.F[13:16, 16:19] = np.eye(3)
-		self.F[16:19, 0:4] = mpl.diff_qstarvq_q(q, acc_b[1:4])# or acc[1:4]
+		self.F[16:19, 0:4] = mpl.diff_qvqstar_q(q, acc_b[1:4])# or acc[1:4]
 		#self.F[16:19, 10:13] = -mpl.diff_qstarvq_v(q)
 		#self.F[13:16,13:16] = self.lamda*np.eye(3)
 
@@ -186,7 +186,7 @@ class EKF:
 		self.G[4:7,0:3] = np.eye(3)#noise of angular velocity
 		self.G[7:10,3:6] = np.eye(3)#noise of bias omega
 		self.G[10:13,6:9] = np.eye(3)#noise of bias acc
-		self.G[16:19, 9:12] = -mpl.diff_qstarvq_v(q)# noise of acceleration
+		self.G[16:19, 9:12] = -mpl.diff_qvqstar_v(q)# noise of acceleration
 		#self.G[13:16,9:12] = np.eye(3)
 
 
@@ -226,7 +226,7 @@ class EKF:
 		q=self.x[0:4]
 		#ba=self.x[13:16]
 		g_n_q = np.array([0.0,0.0,0.0,1.0])#rotation +1, no rotation -1
-		acc_q = mpl.q_p(mpl.q_p(q,g_n_q),self.q_inverse(q)) #????????normalize
+		acc_q = mpl.q_p(mpl.q_p(self.q_inverse(q),g_n_q),q) #????????normalize
 		#geo_mag_field_local_var=np.array([0.0,geo_mag_field[0],geo_mag_field[1],geo_mag_field[2]])
 		#mag_zhat = mpl.q_p(mpl.q_p(q,geo_mag_field_local_var),self.q_inverse(q))
 		print ("acc_q: ", acc_q)
@@ -235,7 +235,7 @@ class EKF:
 		self.zhat[6:9] = self.x[13:16]
 		self.zhat[9:12] = self.x[16:19]
 		#self.zhat[6:9] = mag_zhat[1:4]+self.x[13:16]#mag+bm
-		self.H[0:3, 0:4] = mpl.diff_qvqstar_q(q, GRAVITY)#acc_n+GRAVITY
+		self.H[0:3, 0:4] = mpl.diff_qstarvq_q(q, GRAVITY)#acc_n+GRAVITY
 		self.H[0:3, 10:13] = np.eye(3)
 		self.H[3:6, 4:7] = np.eye(3)
 		self.H[3:6, 7:10] = np.eye(3)
