@@ -113,7 +113,7 @@ class EKF:
 		self.F[13:16, 16:19] *= dt#p=p+vdt
 		self.F[16:19,16:19] = np.eye(3)
 		self.F[16:19,0:4] *= dt#v=v+q*(acc-ba-w)qdt
-		#self.F[16:19, 10:13] *= -dt
+		self.F[16:19, 10:13] *= dt
 		#self.F[13:16,13:16]=np.eye(3)+self.F[13:16,13:16]*dt
 		#self.G=self.G*dt
 		self.G[16:19, 9:12] *= dt
@@ -177,8 +177,8 @@ class EKF:
 		self.F[7:10,7:10] = self.lamda*np.eye(3)
 		self.F[10:13,10:13] = self.lamda*np.eye(3)
 		self.F[13:16, 16:19] = np.eye(3)
-		self.F[16:19, 0:4] = mpl.diff_qvqstar_q(q, acc_b[1:4])# or acc[1:4]
-		#self.F[16:19, 10:13] = -mpl.diff_qstarvq_v(q)
+		self.F[16:19, 0:4] = mpl.diff_qvqstar_q(q, acc)# or acc[1:4]
+		self.F[16:19, 10:13] = -mpl.diff_qvqstar_v(q)
 		#self.F[13:16,13:16] = self.lamda*np.eye(3)
 
 		#self.G[0:4,0:3] = -0.5*mpl.diff_pq_q(q)[0:4,1:4]
