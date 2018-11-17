@@ -63,7 +63,7 @@ while True:
 	orientation[0] *= -1.0
 
 	Euler = quaternion2euler(orientation)
-	print("Enler angle: ", Euler angle)
+	print("Enler angle: ", Euler)
 	
 	Rotation_mat=np.dot(np.array([[0,0,1],[0,1,0],[-1,0,0]]),np.array([[0,1,0],[-1,0,0],[0,0,1.0]]))
 	position = np.dot(Rotation_mat, position)
