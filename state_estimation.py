@@ -9,6 +9,7 @@ from collections import deque
 import zmq
 import json
 import numpy as np
+from manipulation2 import *
 savet = (0.0,0.0,0.0)
 savepose = deque(maxlen=2)
 
@@ -58,6 +59,11 @@ while True:
 	print('asds')
 	contents  =  recv_array(socket_sub,copy=False)
 	position = contents[0:3]
+	orientation = contents[3:7]
+	orientation[0] *= -1.0
+
+	Euler = quaternion2euler(orientation)
+	print("Enler angle: ", Euler angle)
 	
 	Rotation_mat=np.dot(np.array([[0,0,1],[0,1,0],[-1,0,0]]),np.array([[0,1,0],[-1,0,0],[0,0,1.0]]))
 	position = np.dot(Rotation_mat, position)
