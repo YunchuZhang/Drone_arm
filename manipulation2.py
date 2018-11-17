@@ -76,10 +76,10 @@ class mpl:
 		return q
 	def quaternion2mat(self, q):
 		m = np.zeros((3,3))
-		a = q.w
-		b = q.x
-		c = q.y
-		d = q.z
+		a = q[0]
+		b = q[1]
+		c = q[2]
+		d = q[3]
 		m = np.array([[a*a + b*b - c*c - d*d, 2*(b*c - a*d), 2*(b*d+a*c)],
 			[2*(b*c+a*d), a*a - b*b + c*c - d*d, 2*(c*d - a*b)],
 			[2*(b*d - a*c), 2*(c*d+a*b), a*a-b*b - c*c + d*d]])
