@@ -66,6 +66,7 @@ while True:
 	d = contents[6]
 	orientation = np.array([a,b,c,d])
 	orientation[0] *= -1.0
+	print("orientation: ", orientation)
 
 	Euler = mpl.quaternion2euler(orientation)
 	print("Enler angle: ", Euler)
