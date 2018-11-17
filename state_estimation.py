@@ -75,6 +75,9 @@ while True:
 	Euler = mpl.quaternion2euler(orientation)
 	print("Enler angle: ", Euler)
 	savet2 = (Euler[0],Euler[1],Euler[2])
+	print("Angle180", Euler[0]*180/np.pi,Euler[1]*180/np.pi,Euler[2]*180/np.pi)
+
+
 	saveangu.appendleft(savet2)
 
 	Rotation_mat=np.dot(np.array([[0,0,1],[0,1,0],[-1,0,0]]),np.array([[0,1,0],[-1,0,0],[0,0,1.0]]))
@@ -115,6 +118,7 @@ while True:
 	az = (saveangu[0][2] - saveangu[-1][2])/elapsed*1.0
 	Angu = (ax,ay,az)
 	print("Angu speed",Angu)# currently in optitrack coordinates
+	print("Angu speed",ax*180/np.pi,ay*180/np.pi,az*180/np.pi)# currently in optitrack coordinates
 	print("speed",vel)# currently in optitrack coordinates
 	print ("---------------------------------------------------------------------------------")
 
