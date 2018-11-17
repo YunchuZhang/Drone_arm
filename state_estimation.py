@@ -11,8 +11,9 @@ import json
 import numpy as np
 from manipulation2 import *
 savet = (0.0,0.0,0.0)
+savet2 = (0.0,0.0,0.0)
 savepose = deque(maxlen=2)
-
+saveangu = deque(maxlen=2)
 sub_port = 5556
 context = zmq.Context()
 #connect to socket we subscrib
@@ -53,6 +54,9 @@ bb = np.array([0.0,0.0,0.0])
 
 savepose.appendleft(savet)
 savepose.appendleft(savet)
+saveangu.appendleft(savet2)
+saveangu.appendleft(savet2)
+
 elapsed = 1.0
 while True:
 	start = time.clock()
@@ -70,7 +74,9 @@ while True:
 
 	Euler = mpl.quaternion2euler(orientation)
 	print("Enler angle: ", Euler)
-	
+	savet2 = (Euler[0],Euler[1],Euler[2])
+	saveangu.appendleft(savet2)
+
 	Rotation_mat=np.dot(np.array([[0,0,1],[0,1,0],[-1,0,0]]),np.array([[0,1,0],[-1,0,0],[0,0,1.0]]))
 	position = np.dot(Rotation_mat, position)
 	position[2] += 0.22
@@ -104,6 +110,11 @@ while True:
 	vy = (savepose[0][1] - savepose[-1][1])/elapsed*1.0
 	vz = (savepose[0][2] - savepose[-1][2])/elapsed*1.0
 	vel = (vx,vy,vz)
+	ax = (saveangu[0][0] - saveangu[-1][0])/elapsed*1.0
+	ay = (saveangu[0][1] - saveangu[-1][1])/elapsed*1.0
+	az = (saveangu[0][2] - saveangu[-1][2])/elapsed*1.0
+	Angu = (ax,ay,az)
+	print("Angu speed",Angu)# currently in optitrack coordinates
 	print("speed",vel)# currently in optitrack coordinates
 	print ("---------------------------------------------------------------------------------")
 
