@@ -44,6 +44,7 @@ else:
 	
 imu.initialize()
 ekf = EKF()
+mpl=mpl()
 i = 1
 A = np.array([0,0,0])
 B = np.array([0,0,0])
@@ -66,7 +67,7 @@ while True:
 	orientation = np.array([a,b,c,d])
 	orientation[0] *= -1.0
 
-	Euler = quaternion2euler(orientation)
+	Euler = mpl.quaternion2euler(orientation)
 	print("Enler angle: ", Euler)
 	
 	Rotation_mat=np.dot(np.array([[0,0,1],[0,1,0],[-1,0,0]]),np.array([[0,1,0],[-1,0,0],[0,0,1.0]]))
