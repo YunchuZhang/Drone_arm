@@ -107,12 +107,12 @@ class EKF:
 		#self.x[13:16] += self.xdot[13:16]*dt
 		#print "x_hou: ", self.x[10:16]
 		self.F[0:4,0:4] = np.eye(4)+self.F[0:4,0:4]*dt
-		self.F[7:10,7:10] = np.eye(3)+self.F[7:10,7:10]*dt# bias_gyro
-		self.F[10:13,10:13] = np.eye(3)+self.F[10:13,10:13]*dt# bias_a = bias_a +dt
-		self.F[13:16,13:16] = np.eye(3) # p_k+1 = p_k + v*dt
-		self.F[13:16, 16:19] *= dt#p=p+vdt
+		self.F[7:10,7:10] = np.eye(3)+self.F[7:10,7:10]*dt # bias_gyro
+		self.F[10:13,10:13] = np.eye(3)+self.F[10:13,10:13]*dt # bias_a = bias_a +dt
+		self.F[13:16,13:16] = np.eye(3) #p_k+1 = p_k + v*dt
+		self.F[13:16, 16:19] *= dt #p=p+vdt
 		self.F[16:19,16:19] = np.eye(3)
-		self.F[16:19,0:4] *= dt#v=v+q*(acc-ba-w)qdt
+		self.F[16:19,0:4] *= dt #v=v+q*(acc-ba-w)qdt
 		self.F[16:19, 10:13] *= dt
 		#self.F[13:16,13:16]=np.eye(3)+self.F[13:16,13:16]*dt
 		#self.G=self.G*dt
@@ -122,7 +122,7 @@ class EKF:
 
 		#!!!!normalize x first 4 terms,i.e. quaternions
 		self.x[0:4] /= np.linalg.norm(self.x[0:4],ord = 2)
-		print ("euler angle:  ", 180/math.pi*mpl.quaternion2euler(self.array2q(self.x[0:4])))
+		print ("euler angle:  ", 180/math.pi*mpl.quaternion2euler(self.x[0:4]))
 
 		self.current_t=t
 		self.acc=acc
