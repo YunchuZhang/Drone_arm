@@ -59,7 +59,11 @@ while True:
 	print('asds')
 	contents  =  recv_array(socket_sub,copy=False)
 	position = contents[0:3]
-	orientation = contents[3:7]
+	a = contents[3]
+	b = contents[4]
+	c = contents[5]
+	d = contents[6]
+	orientation = np.array([a,b,c,d])
 	orientation[0] *= -1.0
 
 	Euler = quaternion2euler(orientation)
